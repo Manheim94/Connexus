@@ -48,11 +48,25 @@ def pigeon_exists(pigeon_id):
     return False
 
 
-def create_pigeon(pigeon_id, email):
+def create_pigeon(pigeon_id):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
     pigeon = Pigeon()
     pigeon.key = pigeon_key
     pigeon.pigeon_id = pigeon_id
-    pigeon.email = email
     pigeon.put()
     return
+
+
+def _get_stream_dict(stream_key):
+    stream_dict = {}
+    stream_dict['Key'] = stream_key
+    stream_dict['Name'] = stream_key.get().name
+    image_list = Image.query(ancestor=stream_key).order(Image.upload_date).fetch()
+    if image_list:
+        stream_dict['LastPictDate'] = image_list[0].upload_date
+        stream_dict['NumOfPict'] = len(image_list)
+    else:
+        stream_dict['LastPictDate'] = stream_key.get().create_date
+        stream_dict['NumOfPict'] = 0
+    stream_dict['Views'] = stream_key.get().num_of_views
+    return stream_dict
