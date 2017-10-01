@@ -25,7 +25,7 @@ from handlers.ViewTrendingStreamHandler import ViewTrendingStreamHandler
 from handlers.ErrorHandler import ErrorHandler
 
 
-from support import settings
+from config import utils
 from google.appengine.api import users
 
 
@@ -43,7 +43,7 @@ class MainPage(webapp2.RequestHandler):
             'login_url': login_url,
         }
 
-        template = settings.JINJA_ENVIRONMENT.get_template('index.html')
+        template = utils.JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
 
@@ -56,7 +56,7 @@ app = webapp2.WSGIApplication([
     ('/view_all', ViewAllStreamsHandler),
     ('/search', SearchStreamHandler),
     ('/view_trending', ViewTrendingStreamHandler),
-    ('/error', ErrorHandler),
+    ('/error', ErrorHandler)
 
 
 ], debug=True)
