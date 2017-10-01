@@ -16,10 +16,54 @@
 #
 import webapp2
 
-class MainHandler(webapp2.RequestHandler):
+from handlers.ManagePageHandler import ManagePageHandler
+from handlers.CreateNewStreamHandler import  CreateNewStreamHandler
+from handlers.SearchStreamHandler import SearchStreamHandler
+from handlers.ViewSingleStreamHandler import ViewSingleStreamHandler
+from handlers.ViewAllStreamsHandler import ViewAllStreamsHandler
+from handlers.ViewTrendingStreamHandler import ViewTrendingStreamHandler
+from handlers.ErrorHandler import ErrorHandler
+
+
+from config import utils
+from google.appengine.api import users
+
+
+
+class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+
+        if users.get_current_user():
+            login_url = '/manage'
+            self.redirect(login_url)
+        else:
+            login_url = users.create_login_url('/manage')
+
+        template_values = {
+            'login_url': login_url,
+        }
+
+        template = utils.JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
+
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainPage),
+    ('/manage', ManagePageHandler),
+    ('/create', CreateNewStreamHandler),
+    ('/view_single', ViewSingleStreamHandler),
+    ('/view_all', ViewAllStreamsHandler),
+    ('/search', SearchStreamHandler),
+    ('/view_trending', ViewTrendingStreamHandler),
+    ('/error', ErrorHandler)
+
+
 ], debug=True)
+
+def main():
+    app.run()
+
+
+if __name__ == '__main__':
+    main()
