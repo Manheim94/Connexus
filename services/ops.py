@@ -16,8 +16,11 @@ def create_stream(pigeon_id, name, cover_url,
     stream.cover_url = cover_url
     stream.tags = tag_list
     stream.create_date = date.today()
-    # TODO: create subscription with sub_list
     stream.put()
+    for pid in sub_list:
+        if not pigeon_exists(pid):
+            create_pigeon(pid)
+        create_subscription(pid, name)
     return
 
 
@@ -29,17 +32,16 @@ def stream_exists(name):
 
 def get_self_stream(pigeon_id):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
-    stream_key_list = Stream.query(ancestor=pigeon_key).fetch()
-    # TODO: return a list of dict of stream
-    return []
+    stream_list = Stream.query(ancestor=pigeon_key).fetch()
+    return map(_get_stream_dict, stream_list)
 
 
 def get_sub_stream(pigeon_id):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
-    sub_key_list = Subscription.query(
+    sub_list = Subscription.query(
         Subscription.Pigeon_key == pigeon_key).fetch()
-    # TODO: return a list of dict of stream
-    return []
+    stream_list = map(lambda sub: sub.Stream_key.get(), sub_list)
+    return map(_get_stream_dict, stream_list)
 
 
 def pigeon_exists(pigeon_id):
@@ -57,16 +59,55 @@ def create_pigeon(pigeon_id):
     return
 
 
-def _get_stream_dict(stream_key):
-    stream_dict = {}
-    stream_dict['Key'] = stream_key
-    stream_dict['Name'] = stream_key.get().name
-    image_list = Image.query(ancestor=stream_key).order(Image.upload_date).fetch()
+def _get_stream_dict(stream):
+    stream_dict = dict()
+    stream_dict['Name'] = stream.name
+    image_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
     if image_list:
         stream_dict['LastPictDate'] = image_list[0].upload_date
-        stream_dict['NumOfPict'] = len(image_list)
+        stream_dict['NumberOfPict'] = len(image_list)
     else:
-        stream_dict['LastPictDate'] = stream_key.get().create_date
-        stream_dict['NumOfPict'] = 0
-    stream_dict['Views'] = stream_key.get().num_of_views
+        stream_dict['LastPictDate'] = stream.create_date
+        stream_dict['NumberOfPict'] = 0
+    stream_dict['Views'] = stream.num_of_views
     return stream_dict
+
+
+def get_all_stream():
+    stream_list = Stream.query().order(Stream.create_date).fetch()
+    get = lambda s: {"Name": s.name, "CoverPage": s.cover_url}
+    return map(get, stream_list)
+
+
+def get_single_stream(name):
+    stream = Stream.query(Stream.name == name).fetch()
+    img_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
+    get = lambda i: i.url
+    return map(get, img_list)
+
+
+def delete_stream(name):
+    stream_list = Stream.query(Stream.name == name).fetch()
+    if stream_list:
+        stream_list[0].key.delete()
+    return
+
+
+def create_subscription(pigeon_id, name):
+    pigeon_key = ndb.Key(Pigeon, pigeon_id)
+    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    sub = Subscription()
+    sub.Pigeon_key = pigeon_key
+    sub.Stream_key = stream_key
+    sub.put()
+    return
+
+
+def delete_subscription(pigeon_id, name):
+    pigeon_key = ndb.Key(Pigeon, pigeon_id)
+    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    sub_list = Subscription.query(Subscription.Pigeon_key == pigeon_key,
+                                  Subscription.Stream_key == stream_key).fetch()
+    if sub_list:
+        sub_list[0].key.delete()
+    return
