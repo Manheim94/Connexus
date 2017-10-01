@@ -18,7 +18,6 @@ class Stream(ndb.Model):
 
 class Pigeon(ndb.Model):
     pigeon_id = ndb.StringProperty() # user's id
-    email = ndb.StringProperty() # user's email
 
 
 class Subscription(ndb.Model):
