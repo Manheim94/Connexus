@@ -23,8 +23,13 @@
                 <td><input type="checkbox" name="delete_owned" value="{{ s['name'] }}"></td>
             </tr>
             {% endfor %}
+
         </table>
 
+        {% for s in owned_stream_list %}
+
+        <p> {{ s }}</p>
+        {% endfor %}
 <h3>  Streams I Subscribe to</h3>
   <!-- First Photo Grid-->
 
