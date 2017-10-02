@@ -5,16 +5,16 @@ class Image(ndb.Model):
     comments = ndb.StringProperty()
     name = ndb.StringProperty()
     url = ndb.StringProperty()
-    upload_date = ndb.DateProperty()
+    upload_date = ndb.DateProperty(auto_now_add=True)
 
 
 class Stream(ndb.Model):
     cover_url = ndb.StringProperty()
-    create_date = ndb.DateProperty()
+    create_date = ndb.DateProperty(auto_now_add=True)
     name = ndb.StringProperty()
     num_of_views = ndb.IntegerProperty()
     tags = ndb.StringProperty(repeated=True)
-
+    view_dates = ndb.DateTimeProperty(repeated=True)
 
 class Pigeon(ndb.Model):
     pigeon_id = ndb.StringProperty() # user's id

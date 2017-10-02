@@ -1,6 +1,6 @@
 
 # Database related operation
-from datetime import date
+from datetime import datetime, timedelta
 
 from google.appengine.ext import ndb
 
@@ -15,7 +15,6 @@ def create_stream(pigeon_id, name, cover_url,
     stream.name = name
     stream.cover_url = cover_url
     stream.tags = tag_list
-    stream.create_date = date.today()
     stream.put()
     for pid in sub_list:
         if not pigeon_exists(pid):
@@ -75,15 +74,27 @@ def _get_stream_dict(stream):
 
 def get_all_stream():
     stream_list = Stream.query().order(Stream.create_date).fetch()
-    get = lambda s: {"Name": s.name, "CoverPage": s.cover_url}
-    return map(get, stream_list)
+    return map(lambda s: {"Name": s.name, "CoverPage": s.cover_url},
+               stream_list)
 
 
 def get_single_stream(name):
-    stream = Stream.query(Stream.name == name).fetch()
+    stream_list = Stream.query(Stream.name == name).fetch()
+    if not stream_list:
+        return []
+    stream = stream_list[0]
+    # count the number of views and discard the overtime logs
+    delta = timedelta(hours=1)
+    for i, dt in enumerate(stream.view_dates):
+        if datetime.now() - dt < delta:
+            stream.view_dates = stream.view_dates[i:]
+            break
+    stream.view_dates.append(datetime.now())
+    stream.num_of_views = len(stream.view_dates)
+    stream.put()
+    # return images
     img_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
-    get = lambda i: i.url
-    return map(get, img_list)
+    return map(lambda img: img.url, img_list)
 
 
 def delete_stream(name):
@@ -111,3 +122,11 @@ def delete_subscription(pigeon_id, name):
     if sub_list:
         sub_list[0].key.delete()
     return
+
+
+def get_trending_stream():
+    stream_list = Stream.query().order(Stream.num_of_views).fetch(3)
+    return map(lambda s: {"Name": s.name,
+                          "CoverPage": s.cover_url,
+                          "NumberOfViews": s.num_of_views},
+               stream_list)
