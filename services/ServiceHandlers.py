@@ -2,6 +2,7 @@ import ops
 import webapp2
 import json
 from google.appengine.api import images
+import ServiceHandlerTwo
 
 
 class ManageServiceHandler(webapp2.RequestHandler):
@@ -64,5 +65,6 @@ service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
     ('/service-viewsinglestream', ViewSingleStreamServiceHandler),
-    ('/service-uploadimage', UploadImageServiceHandler)
+    ('/service-uploadimage', UploadImageServiceHandler),
+    ('/service-create', ServiceHandlerTwo.CreateStreamServiceHandler)
 ], debug=True)
