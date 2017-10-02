@@ -23,6 +23,8 @@ from handlers.ViewSingleStreamHandler import ViewSingleStreamHandler
 from handlers.ViewAllStreamsHandler import ViewAllStreamsHandler
 from handlers.ViewTrendingStreamHandler import ViewTrendingStreamHandler
 from handlers.ErrorHandler import ErrorHandler
+from handlers.ManagePageHandler import ManagePageDeleteHandler
+from handlers.ManagePageHandler import ManagePageUnsubscribeHandler
 
 
 from config import utils
@@ -56,8 +58,9 @@ app = webapp2.WSGIApplication([
     ('/view_all', ViewAllStreamsHandler),
     ('/search', SearchStreamHandler),
     ('/view_trending', ViewTrendingStreamHandler),
-    ('/error', ErrorHandler)
-
+    ('/error', ErrorHandler),
+    ('/delete_owned_stream_handler_url', ManagePageDeleteHandler),
+    ('/unsubscribe_stream_handler_url',ManagePageUnsubscribeHandler)
 
 ], debug=True)
 
