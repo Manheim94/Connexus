@@ -130,3 +130,16 @@ def get_trending_stream():
                           "CoverPage": s.cover_url,
                           "NumberOfViews": s.num_of_views},
                stream_list)
+
+def create_image(comment, name, url, stream_name):
+    stream_list = Stream.query(Stream.name == stream_name).fetch()
+    if stream_list:
+        stream = stream_list[0]
+        image_key = ndb.Key(Image, url, parent=stream.key)
+        img = Image()
+        img.key = image_key
+        img.name = name
+        img.url = url
+        img.comments = comment
+        img.put()
+    return
