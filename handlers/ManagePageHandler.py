@@ -65,7 +65,7 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
             'delete_list': delete_list
         }
 
-        self.response.write(delete_list)
+        #self.response.write(delete_list)
         try:
             form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -75,16 +75,18 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
                 method=urlfetch.POST,
                 headers=headers)
             self.response.write(result.content)
+            self.redirect('/manage')
 
         except urlfetch.Error:
             logging.exception('Caught exception fetching url')
 
 class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
     def post(self):
-
+        current_user = users.get_current_user().email()
         unsubscribe_list= self.request.get_all('unsubscribe')
         form_fields={
-            'unsubscribe_list': unsubscribe_list
+            'unsubscribe_list': unsubscribe_list,
+            'user_id': current_user
         }
         try:
             form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
@@ -95,6 +97,7 @@ class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
                 method=urlfetch.POST,
                 headers=headers)
             self.response.write(result.content)
+            self.redirect('/manage')
 
 
         except urlfetch.Error:

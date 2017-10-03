@@ -17,7 +17,7 @@
 import webapp2
 
 from handlers.ManagePageHandler import ManagePageHandler
-from handlers.CreateNewStreamHandler import  CreateNewStreamHandler
+from handlers.CreateNewStreamHandler import  CreateNewStreamPageHandler
 from handlers.SearchStreamHandler import SearchStreamHandler
 from handlers.ViewSingleStreamHandler import ViewSingleStreamHandler
 from handlers.ViewAllStreamsHandler import ViewAllStreamsHandler
@@ -25,6 +25,7 @@ from handlers.ViewTrendingStreamHandler import ViewTrendingStreamHandler
 from handlers.ErrorHandler import ErrorHandler
 from handlers.ManagePageHandler import ManagePageDeleteHandler
 from handlers.ManagePageHandler import ManagePageUnsubscribeHandler
+from handlers.CreateNewStreamHandler import CreateNewStreamRequestHandler
 
 
 from config import utils
@@ -53,14 +54,15 @@ class MainPage(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/manage', ManagePageHandler),
-    ('/create', CreateNewStreamHandler),
+    ('/create', CreateNewStreamPageHandler),
     ('/view_single', ViewSingleStreamHandler),
     ('/view_all', ViewAllStreamsHandler),
     ('/search', SearchStreamHandler),
     ('/view_trending', ViewTrendingStreamHandler),
     ('/error', ErrorHandler),
     ('/delete_owned_stream_handler_url', ManagePageDeleteHandler),
-    ('/unsubscribe_stream_handler_url',ManagePageUnsubscribeHandler)
+    ('/unsubscribe_stream_handler_url',ManagePageUnsubscribeHandler),
+    ('/create_stream_url',CreateNewStreamRequestHandler)
 
 ], debug=True)
 
