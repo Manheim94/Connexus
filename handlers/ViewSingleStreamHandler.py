@@ -16,8 +16,13 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         if not users.get_current_user():
             self.redirect(users.create_login_url(self.request.uri))
         else:
+            global stream_id
             stream_id = self.request.get('stream_id')
+            self.increase_view_count()
             self.render()
+
+    def increase_view_count(self): #do i need this?
+        pass
 
     def render(self):
         #appName = app_identity.get_application_id()
