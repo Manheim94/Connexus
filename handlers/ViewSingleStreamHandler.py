@@ -18,12 +18,9 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             self.redirect(users.create_login_url(self.request.uri))
         else:
             global stream_id
-            stream_id = self.request.get('stream_id')
-            self.increase_view_count()
+            stream_id = "The_Beijing_Photos"#self.request.get('stream_id')
             self.render()
 
-    def increase_view_count(self): #do i need this?
-        pass
 
     def render(self):
         #appName = app_identity.get_application_id()
@@ -50,7 +47,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         page_range=data['page_range']
         logout_url = users.create_logout_url(utils.raw_logout_url)
         upload_image_handler_url='/upload_image_handler_url'
-        upload_image_servic_url='https://services-dot-hallowed-forge-181415.appspot.com/service-test'
+        upload_image_servic_url='https://services-dot-hallowed-forge-181415.appspot.com/service-uploadimage'
 
         template_values = {
             'logout_url': logout_url,
@@ -64,6 +61,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         template = utils.JINJA_ENVIRONMENT.get_template('fresh_view_single_stream.html')
         self.response.write(template.render(template_values))
 
+#this is dead
 class UploadImageHandler(webapp2.RequestHandler):
     def post(self):
         current_user = users.get_current_user().email()
@@ -82,13 +80,12 @@ class UploadImageHandler(webapp2.RequestHandler):
             headers = {}#{'Content-Type': 'multipart/form-data'}
             #headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-test',  # need changing
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-uploadimage',  # need changing
                 payload=form_data,
                 method=urlfetch.POST)
                 #,headers=headers)
             self.response.write(result.content)
             self.redirect('/view_single')
-
 
         except urlfetch.Error:
             logging.exception('Caught exception fetching url')
