@@ -16,5 +16,5 @@ class SearchStreamHandler(webapp2.RequestHandler):
             'logout_url': logout_url,
             'current_user': 'haha'
         }
-        template = utils.JINJA_ENVIRONMENT.get_template('fresh_manage.html')
+        template = utils.JINJA_ENVIRONMENT.get_template('fresh_search_streams.html')
         self.response.write(template.render(template_values))
