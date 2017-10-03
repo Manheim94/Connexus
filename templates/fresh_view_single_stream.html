@@ -11,7 +11,7 @@
 
 
   <!-- Upload Area-->
-<form action="{{upload_image_handler_url}}" method="post">
+<form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data">
     <p>File Name</p> <input type="text" name="img_name"/>
     <input type="file" name="img"/>
     <input type="submit" value="upload" />
