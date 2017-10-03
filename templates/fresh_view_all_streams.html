@@ -6,8 +6,12 @@
 
 {% endblock %}
 {% block main_content %}
-
+<h3>View All Streams</h3>
   <!-- A List of Cover Pictures-->
+{% for s in stream_list %}
 
+<img src="{{s['CoverPage']}}"/>
+
+{% endfor %}
 
 {% endblock %}
