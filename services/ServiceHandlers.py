@@ -97,7 +97,7 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
         ops.create_image(img_comment, img_name, unicorn_url, stream_id)
 
         # redirect the user to the view single page
-        self.redirect("https://www.pornhub.com")
+        self.redirect("http://english.gov.cn/")
         #webapp2.redirect("http://www.facebook.com")
 
 
@@ -123,7 +123,6 @@ service = webapp2.WSGIApplication([
     ('/service-viewsinglestream', ViewSingleStreamServiceHandler),
     ('/service-uploadimage', UploadImageServiceHandler),
     ('/service-create', ServiceHandlerTwo.CreateStreamServiceHandler),
-    ('/service-createstream', CreateStreamServiceHandler),
     ('/service-deletestream', DeleteStreamServiceHandler),
     ('/service-unsubscribestream', UnsubscribeStreamServiceHandler)
 ], debug=True)
