@@ -6,13 +6,27 @@
 
 {% endblock %}
 {% block main_content %}
+<form action="{{create_stream_url}}" method="post">
+    <h4>Name your Stream</h4>
+      <!-- Stream name-->
+    <input type="text" name="stream_name"/> <br>
 
-  <!-- Stream name-->
+      <!-- Subscribers-->
+    <h4>Add Subscribers</h4>
+    <textarea name="subscribers" rows="5" hint="Message for invite"></textarea>
 
-  <!-- Subscribers-->
+    <textarea name="message" rows="5" placeholder="Message for invite"></textarea>
 
-  <!-- Tags -->
+      <!-- Tags -->
+    <h4>Tag Your Streams</h4>
+    <input type="textarea" name="tags" /> <br>
 
-  <!-- URLs -->
+      <!-- URLs -->
+    <h4>URL to cover image</h4>
+    <input type="text" name="cover_url"/> <br>
+
+    <input type="submit" value="Create Stream"/>
+
+</form>
 
 {% endblock %}
