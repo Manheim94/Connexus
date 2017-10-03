@@ -8,6 +8,7 @@ from google.appengine.api import app_identity
 from config import utils
 import urllib
 import json
+import logging
 
 
 class ViewSingleStreamHandler(webapp2.RequestHandler):
@@ -48,12 +49,42 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         pict_list=data['pict_list']
         page_range=data['page_range']
         logout_url = users.create_logout_url(utils.raw_logout_url)
+        upload_image_handler_url='/upload_image_handler_url'
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
             'pict_list':pict_list,
-            'page_range':page_range
+            'page_range':page_range,
+            'upload_image_handler_url':upload_image_handler_url
         }
-        template = utils.JINJA_ENVIRONMENT.get_template('fresh_manage.html')
+
+        template = utils.JINJA_ENVIRONMENT.get_template('fresh_view_single_stream.html')
         self.response.write(template.render(template_values))
 
+class UploadImageHandler(webapp2.RequestHandler):
+    def post(self):
+        current_user = users.get_current_user().email()
+        img=self.request.get('img')
+        img_comment=""
+        img_name=self.request.get('img_name')
+        form_fields = {
+            'img': img,
+            'img_comment':img_comment,
+            'img_name':img_name,
+            'user_id': current_user,
+            'stream_id': ViewSingleStreamHandler.stream_id
+        }
+        try:
+            form_data = urllib.urlencode(form_fields)
+            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            result = urlfetch.fetch(
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-test',  # need changing
+                payload=form_data,
+                method=urlfetch.POST,
+                headers=headers)
+            self.response.write(result.content)
+            self.redirect('/view_single')
+
+
+        except urlfetch.Error:
+            logging.exception('Caught exception fetching url')
