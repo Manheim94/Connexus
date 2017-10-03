@@ -50,13 +50,16 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         page_range=data['page_range']
         logout_url = users.create_logout_url(utils.raw_logout_url)
         upload_image_handler_url='/upload_image_handler_url'
+        upload_image_servic_url='https://services-dot-hallowed-forge-181415.appspot.com/service-test'
+
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
             'pict_list':pict_list,
             'page_range':page_range,
-            'upload_image_handler_url':upload_image_handler_url
+            'upload_image_handler_url':upload_image_servic_url
         }
+
 
         template = utils.JINJA_ENVIRONMENT.get_template('fresh_view_single_stream.html')
         self.response.write(template.render(template_values))
@@ -76,12 +79,13 @@ class UploadImageHandler(webapp2.RequestHandler):
         }
         try:
             form_data = urllib.urlencode(form_fields)
-            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            headers = {}#{'Content-Type': 'multipart/form-data'}
+            #headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
                 url='https://services-dot-hallowed-forge-181415.appspot.com/service-test',  # need changing
                 payload=form_data,
-                method=urlfetch.POST,
-                headers=headers)
+                method=urlfetch.POST)
+                #,headers=headers)
             self.response.write(result.content)
             self.redirect('/view_single')
 
