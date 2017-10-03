@@ -24,6 +24,7 @@ __all__ = ['ReadBuffer',
 
 import collections
 import os
+
 import urlparse
 
 from . import api_utils
