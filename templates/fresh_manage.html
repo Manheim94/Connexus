@@ -8,30 +8,51 @@
 {% block main_content %}
 
 <h3>Streams I Own</h3>
+    <form action="{{ delete_owned_stream_handler_url }}" method="post">
         <table >
             <tr>
                 <th>Name</th>
                 <th>Last New Picture</th>
                 <th>Number of Pictures</th>
+                <th>Views</th>
                 <th>Delete</th>
             </tr>
             {% for s in owned_stream_list %}
             <tr>
-                <td><a href="">{{ s['name'] }}</a></td>
-                <td>{{ s['latest_date'] }}</td>
-                <td>{{ s['num_of_pics'] }}</td>
-                <td><input type="checkbox" name="delete_owned" value="{{ s['name'] }}"></td>
+                <td><a href="">{{ s['Name'] }}</a></td>
+                <td>{{ s['LastPictDate'] }}</td>
+                <td>{{ s['NumberOfPict'] }}</td>
+                <td>{{ s['Views'] }}</td>
+                <td><input type="checkbox" name="delete_owned" value="aaa"></td>
             </tr>
             {% endfor %}
-
         </table>
+        <input type="submit" value="Delete Checked">
+    </form>
 
-        {% for s in owned_stream_list %}
 
-        <p> {{ s }}</p>
-        {% endfor %}
 <h3>  Streams I Subscribe to</h3>
-  <!-- First Photo Grid-->
+    <form action="{{ unsubscribe_stream_handler_url }}" method="post">
+        <table >
+            <tr>
+                <th>Name</th>
+                <th>Last New Picture</th>
+                <th>Number of Pictures</th>
+                <th>Views</th>
+                <th>Delete</th>
+            </tr>
+            {% for s in owned_stream_list %}
+            <tr>
+                <td><a href="">{{ s['Name'] }}</a></td>
+                <td>{{ s['LastPictDate'] }}</td>
+                <td>{{ s['NumberOfPict'] }}</td>
+                <td>{{ s['Views'] }}</td>
+                <td><input type="checkbox" name="unsubscribe" value="aaa"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Unsubscribe Checked">
+    </form>
 
 
 {% endblock %}
