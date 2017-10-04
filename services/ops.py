@@ -106,7 +106,8 @@ def delete_stream(name):
 
 def create_subscription(pigeon_id, name):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
-    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    stream_list = Stream.query(Stream.name == name).fetch()
+    stream_key = stream_list[0].key
     sub = Subscription()
     sub.Pigeon_key = pigeon_key
     sub.Stream_key = stream_key
@@ -116,7 +117,8 @@ def create_subscription(pigeon_id, name):
 
 def delete_subscription(pigeon_id, name):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
-    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    stream_list = Stream.query(Stream.name == name).fetch()
+    stream_key = stream_list[0].key
     sub_list = Subscription.query(Subscription.Pigeon_key == pigeon_key,
                                   Subscription.Stream_key == stream_key).fetch()
     if sub_list:
@@ -171,7 +173,8 @@ def get_stream_owner(stream_name):
 
 def is_subscribed(name, pigeon_id):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
-    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    stream_list = Stream.query(Stream.name == name).fetch()
+    stream_key = stream_list[0].key
     sub_list = Subscription.query(Subscription.Pigeon_key == pigeon_key,
                                   Subscription.Stream_key == stream_key).fetch()
     return True if sub_list else False
