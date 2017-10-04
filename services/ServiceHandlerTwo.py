@@ -31,11 +31,12 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         sub_list = re.findall(r'[\w\.-]+@[\w\.-]+', subscribers)  # a list of emails
 
         '''send email'''
-        mail.send_mail(sender=user_id,
-                       to=sub_list,
-                       subject='You have subscribed the stream: ' + name,
-                       body=message
-                       )
+        if len(sub_list)!=0:
+            mail.send_mail(sender=user_id,
+                           to=sub_list,
+                           subject='You have subscribed the stream: ' + name,
+                           body=message
+                           )
 
         '''create stream'''
         ops.create_stream(user_id, name, cover_url, sub_list, tag_list)
@@ -65,18 +66,20 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
 
 class SearchServiceHandler(webapp2.RequestHandler):
-    def post(self):
+    def get(self):
+
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
             index = search.Index(name='streamSearch')
             search_results = index.search(query)  # result list
-            returned_count = len(search_results.results)
-            number_found = search_results.number_found
+            #returned_count = len(search_results.results)
+            #number_found = search_results.number_found
 
             streamList = []
             for doc in search_results:
-                streamList.append( doc.fields('name').value )
+                streamList.append( doc.fields[0].value )
+
         except search.Error:
             logging.exception('An error occurred on search.')
 
@@ -84,6 +87,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
             'streams': streamList
         }
         self.response.write(json.dumps(return_info))
+
 
 
 
