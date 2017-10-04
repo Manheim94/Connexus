@@ -23,7 +23,7 @@ class SearchStreamHandler(webapp2.RequestHandler):
                 rpc = urlfetch.create_rpc()
                 request = {}
                 request['user_id'] = current_user
-                request['searchword'] = searchword
+                request['searchContent'] = searchword
                 url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-search?' + urllib.urlencode(request)
 
                 urlfetch.make_fetch_call(rpc, url)
@@ -33,8 +33,8 @@ class SearchStreamHandler(webapp2.RequestHandler):
             except Exception:
                 self.response.write("Error!<br>")
                 self.response.write(Exception)
-
-            stream_list=data['stream_list']
+            #self.response.write(data)
+            stream_list=data['streams']
         else:
             stream_list=""
 

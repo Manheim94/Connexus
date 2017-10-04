@@ -42,6 +42,12 @@ class ManagePageHandler(webapp2.RequestHandler):
         delete_owned_stream_handler_url="/delete_owned_stream_handler_url"
         unsubscribe_stream_handler_url="/unsubscribe_stream_handler_url"
 
+        for stream in owned_stream_list:
+            stream['url']="/view_single?stream_id="+ stream['Name']
+
+        for stream in subed_stream_list:
+            stream['url']="/view_single?stream_id="+ stream['Name']
+
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
@@ -60,10 +66,16 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
 
         delete_list=self.request.get_all('delete_owned')
 
+        delete_pass_str=""
+        for stream_name in delete_list:
+            delete_pass_str+=stream_name
+            delete_pass_str+=","
+        delete_pass_str=delete_pass_str[:-1]
+
         form_fields={
-            'delete_list': delete_list
+            'delete_list': delete_pass_str
         }
-        #self.response.write(delete_list)
+
 
         try:
             form_data = urllib.urlencode(form_fields)
@@ -74,7 +86,7 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
                 method=urlfetch.POST,
                 headers=headers)
             self.response.write(result.content)
-            #self.redirect('/manage')
+            self.redirect('/manage')
 
         except urlfetch.Error:
             logging.exception('Caught exception fetching url')
@@ -83,8 +95,16 @@ class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
     def post(self):
         current_user = users.get_current_user().email()
         unsubscribe_list= self.request.get_all('unsubscribe')
+
+        unsubscribe_pass_str = ""
+        for stream_name in unsubscribe_list:
+            unsubscribe_pass_str += stream_name
+            unsubscribe_pass_str += ","
+            unsubscribe_pass_str = unsubscribe_pass_str[:-1]
+
+        
         form_fields={
-            'unsubscribe_list': unsubscribe_list,
+            'unsubscribe_list': unsubscribe_pass_str,
             'user_id': current_user
         }
         try:

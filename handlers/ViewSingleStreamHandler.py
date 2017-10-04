@@ -29,6 +29,10 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         logout_url = users.create_logout_url(utils.raw_logout_url)
         data = {}
         stream_id= self.request.get('stream_id')
+        if not self.request.get('page_range'):
+            page_range=4
+        else:
+            page_range=self.request.get('page_range')
 
         try:
             rpc = urlfetch.create_rpc()
