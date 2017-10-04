@@ -4,10 +4,14 @@ import ops
 import webapp2
 import json
 from google.appengine.api import users
+import storage_ops
+from google.appengine.api import search
+import logging
 
 
 class CreateStreamServiceHandler(webapp2.RequestHandler):
     def post(self):
+
         user_id = self.request.get('user_id')  # from Zhangyi 'current_user' exactly
         name = self.request.get('name')  # from page
         cover_url = self.request.get('cover_url')  # from page    can be empty!
@@ -35,13 +39,51 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''create stream'''
         ops.create_stream(user_id, name, cover_url, sub_list, tag_list)
-
+        storage_ops.create_stream_in_storage(name)
         return_info = {
             'status': True,
         }
         self.response.write(json.dumps(return_info))
 
+        '''create and add to index'''
+        self.AddToIndex(name,tags)
+
+    def AddToIndex(self,name,tags):
+        '''index created, exist all way'''
+        index = search.Index(name='streamSearch')
+
+        '''add docu into index'''
+        fields = [
+            search.AtomField(name='name', value = name),
+            search.TextField(name='tag', value = tags) ]
+        d = search.Document(doc_id=name, fields=fields)
+        try:
+            add_result = index.put(d)  # return array
+        except search.Error:
+            logging.exception('An error occurred on adding.')
+
+
+
 class SearchServiceHandler(webapp2.RequestHandler):
     def post(self):
-        content = self.request.get('content')
+        searchContent = self.request.get('searchContent')
+        query = searchContent
+        try:
+            index = search.Index(name='streamSearch')
+            search_results = index.search(query)  # result list
+            returned_count = len(search_results.results)
+            number_found = search_results.number_found
+
+            streamList = []
+            for doc in search_results:
+                streamList.append( doc.fields('name').value )
+        except search.Error:
+            logging.exception('An error occurred on search.')
+
+        return_info = {
+            'streams': streamList
+        }
+        self.response.write(json.dumps(return_info))
+
+
 
