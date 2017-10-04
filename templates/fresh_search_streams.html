@@ -8,10 +8,16 @@
 {% block main_content %}
 
   <!-- Search Area-->
-<form>
+<form action="{{search_send_request_handler_url}}" method="get">
     <input type="text" name="searchword"/>
     <input type="submit" value="Search" />
 </form>
+
+{% for s in stream_list %}
+
+<img src="{{s['CoverPage']}}"/>
+
+{% endfor %}
 
   <!-- Result Area-->
 

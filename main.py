@@ -27,6 +27,7 @@ from handlers.ManagePageHandler import ManagePageDeleteHandler
 from handlers.ManagePageHandler import ManagePageUnsubscribeHandler
 from handlers.CreateNewStreamHandler import CreateNewStreamRequestHandler
 from handlers.ViewSingleStreamHandler import UploadImageHandler
+from handlers.SearchStreamHandler import SearchSendRequestHandler
 
 from config import utils
 from google.appengine.api import users
@@ -63,7 +64,8 @@ app = webapp2.WSGIApplication([
     ('/delete_owned_stream_handler_url', ManagePageDeleteHandler),
     ('/unsubscribe_stream_handler_url',ManagePageUnsubscribeHandler),
     ('/create_stream_url',CreateNewStreamRequestHandler),
-    ('/upload_image_handler_url',UploadImageHandler)
+    ('/upload_image_handler_url',UploadImageHandler),
+    ('/search_send_request_handler_url', SearchSendRequestHandler)
 
 ], debug=True)
 
