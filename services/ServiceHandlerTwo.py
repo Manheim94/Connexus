@@ -74,19 +74,29 @@ class SearchServiceHandler(webapp2.RequestHandler):
             index = search.Index(name='streamSearch')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
-            #number_found = search_results.number_found
+            number_found = search_results.number_found
 
             streamList = []
             for doc in search_results:
+
                 streamList.append( doc.fields[0].value )
 
         except search.Error:
             logging.exception('An error occurred on search.')
 
+        streamInfo = ops.get_search_stream(streamList)
         return_info = {
-            'streams': streamList
+            'num' : number_found,
+            'streams': streamInfo
         }
         self.response.write(json.dumps(return_info))
+
+'''
+class TrendingServiceHandler(webapp2.RequestHandler):
+    def get(self):
+'''
+
+
 
 
 
