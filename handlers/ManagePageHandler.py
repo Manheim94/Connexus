@@ -26,7 +26,6 @@ class ManagePageHandler(webapp2.RequestHandler):
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
-            #request['stream_id'] = 'stream1'
             url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-manage?' + urllib.urlencode(request)
 
             #url = 'https://services-dot-' + appName + '.appspot.com?' + urllib.urlencode(request)
@@ -43,6 +42,12 @@ class ManagePageHandler(webapp2.RequestHandler):
         delete_owned_stream_handler_url="/delete_owned_stream_handler_url"
         unsubscribe_stream_handler_url="/unsubscribe_stream_handler_url"
 
+        for stream in owned_stream_list:
+            stream['url']="/view_single?stream_id="+ stream['Name']
+
+        for stream in subed_stream_list:
+            stream['url']="/view_single?stream_id="+ stream['Name']
+
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
@@ -56,17 +61,24 @@ class ManagePageHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 class ManagePageDeleteHandler(webapp2.RequestHandler):
-    form_fields={}
+    #form_fields={}
     def post(self):
 
         delete_list=self.request.get_all('delete_owned')
 
+        delete_pass_str=""
+        for stream_name in delete_list:
+            delete_pass_str+=stream_name
+            delete_pass_str+=","
+        delete_pass_str=delete_pass_str[:-1]
+
         form_fields={
-            'delete_list': delete_list
+            'delete_list': delete_pass_str
         }
 
+
         try:
-            form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
+            form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
                 url='https://services-dot-hallowed-forge-181415.appspot.com/service-deletestream',
@@ -83,15 +95,23 @@ class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
     def post(self):
         current_user = users.get_current_user().email()
         unsubscribe_list= self.request.get_all('unsubscribe')
+
+        unsubscribe_pass_str = ""
+        for stream_name in unsubscribe_list:
+            unsubscribe_pass_str += stream_name
+            unsubscribe_pass_str += ","
+            unsubscribe_pass_str = unsubscribe_pass_str[:-1]
+
+        
         form_fields={
-            'unsubscribe_list': unsubscribe_list,
+            'unsubscribe_list': unsubscribe_pass_str,
             'user_id': current_user
         }
         try:
-            form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
+            form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-deletestream', #need changing
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-unsubscribestream', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)

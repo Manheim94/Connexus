@@ -6,6 +6,7 @@ from config import utils
 import urllib
 from google.appengine.api import urlfetch
 import logging
+import json
 
 class CreateNewStreamPageHandler(webapp2.RequestHandler):
     def get(self):
@@ -30,22 +31,36 @@ class CreateNewStreamRequestHandler(webapp2.RequestHandler):
     form_fields={}
     def post(self):
         current_user = users.get_current_user().email()
+        name= self.request.get('stream_name')
+        cover_url= self.request.get('cover_url')
+        subscribers = self.request.get('subscribers')
+        message = self.request.get('message')
+        tags = self.request.get('tags')
 
         form_fields={
             'user_id':current_user,
-            'name': "hopefullySuccess"
+            'name': name,
+            'cover_url':cover_url,
+            'subscribers': subscribers,
+            'message': message,
+            'tags': tags
         }
 
         try:
             form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-test', #need changing
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-create', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)
-            self.response.write(result.content)
-            #self.redirect('/manage')
+            #self.response.write(type(result.content))
+            returnvalue=json.loads(result.content)
+            status=returnvalue['status']
+            if(status==True):
+                self.redirect('/view_single?stream_id='+name)
+            else:
+                self.redirect('')
 
 
         except urlfetch.Error:

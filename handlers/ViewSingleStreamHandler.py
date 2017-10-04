@@ -12,27 +12,34 @@ import logging
 
 
 class ViewSingleStreamHandler(webapp2.RequestHandler):
-    stream_id=""
+   # stream_id=""
     def get(self):
         if not users.get_current_user():
             self.redirect(users.create_login_url(self.request.uri))
         else:
-            global stream_id
-            stream_id = "The_Beijing_Photos"#self.request.get('stream_id')
+            #global stream_id
+            #stream_id = self.request.get('stream_id')
             self.render()
 
 
     def render(self):
         #appName = app_identity.get_application_id()
+        #self.response.write(stream_id)
         current_user = users.get_current_user().email()
         logout_url = users.create_logout_url(utils.raw_logout_url)
         data = {}
+        stream_id= self.request.get('stream_id')
+        if not self.request.get('page_range'):
+            page_range=4
+        else:
+            page_range=self.request.get('page_range')
 
         try:
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
-            request['stream_id'] = ViewSingleStreamHandler.stream_id
+            request['stream_id'] = stream_id
+            request['page_range'] = 4
             url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewsinglestream?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
@@ -54,12 +61,17 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             'current_user': current_user,
             'pict_list':pict_list,
             'page_range':page_range,
-            'upload_image_handler_url':upload_image_servic_url
+            'upload_image_handler_url':upload_image_servic_url,
+            'stream_id':stream_id
         }
 
 
         template = utils.JINJA_ENVIRONMENT.get_template('fresh_view_single_stream.html')
         self.response.write(template.render(template_values))
+
+class ViewSingleShowMoreHandler(webapp2.RequestHandler):
+    def get(self):
+        pass
 
 #this is dead
 class UploadImageHandler(webapp2.RequestHandler):

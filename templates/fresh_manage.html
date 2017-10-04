@@ -19,11 +19,11 @@
             </tr>
             {% for s in owned_stream_list %}
             <tr>
-                <td><a href="">{{ s['Name'] }}</a></td>
+                <td><a href="{{s['url']}}">{{ s['Name'] }}</a></td>
                 <td>{{ s['LastPictDate'] }}</td>
                 <td>{{ s['NumberOfPict'] }}</td>
                 <td>{{ s['Views'] }}</td>
-                <td><input type="checkbox" name="delete_owned" value="aaa"></td>
+                <td><input type="checkbox" name="delete_owned" value="{{s['Name']}}"></td>
             </tr>
             {% endfor %}
         </table>
@@ -43,11 +43,11 @@
             </tr>
             {% for s in owned_stream_list %}
             <tr>
-                <td><a href="">{{ s['Name'] }}</a></td>
+                <td><a href="{{s['url']}}">{{ s['Name'] }}</a></td>
                 <td>{{ s['LastPictDate'] }}</td>
                 <td>{{ s['NumberOfPict'] }}</td>
                 <td>{{ s['Views'] }}</td>
-                <td><input type="checkbox" name="unsubscribe" value="aaa"></td>
+                <td><input type="checkbox" name="unsubscribe" value="{{s['Name']}}"></td>
             </tr>
             {% endfor %}
         </table>
