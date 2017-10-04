@@ -27,10 +27,8 @@ class ManageServiceHandler(webapp2.RequestHandler):
             owned_stream_list = []
             subed_stream_list = []
         else:
-            owned_stream_list = [1, 2, 3]
-            subed_stream_list = [4, 5, 6]
-            # owned_stream_list = ops.get_self_stream(user_id)
-            # subed_stream_list = ops.get_sub_stream(user_id)
+            owned_stream_list = ops.get_self_stream(user_id)
+            subed_stream_list = ops.get_sub_stream(user_id)
         return_info = {
             'owned_stream_list': owned_stream_list,
             'subed_stream_list': subed_stream_list
@@ -56,10 +54,10 @@ class ViewSingleStreamServiceHandler(webapp2.RequestHandler):
         all_pict_list = ops.get_single_stream(stream_id)
         pict_list = []
         for i in range(min(page_range, len(all_pict_list))):
-            pict_list[i] = all_pict_list[i]
+            pict_list.append(all_pict_list[i])
         return_info = {
             'page_range': min(page_range, len(all_pict_list)),
-            'pict_list': pict_list
+            'pict_list': all_pict_list
         }
         self.response.write(json.dumps(return_info))
 
@@ -92,7 +90,7 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
         # generate the public url
         # not test yet TODO: test the url
         unicorn_url = "https://storage.googleapis.com/hallowed-forge-181415.appspot.com/" \
-                      + str(stream_id) + "/" + str(img_name) + ".png"
+                      + str(stream_id) + "/" + str(img_name) + "." + str(img_real_type).lower()
         # back to ndb server
         ops.create_image(img_comment, img_name, unicorn_url, stream_id)
 
@@ -103,9 +101,15 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
 
 class DeleteStreamServiceHandler(webapp2.RequestHandler):
     def post(self):
-        delete_stream_list = self.request.POST['delete_list']
+        delete_stream_string = self.request.get('delete_list')
+        delete_stream_list = delete_stream_string.split(',')
         # delete the stream list using map method
-        map(ops.delete_stream, delete_stream_list)
+        # self.response.out.write(delete_stream_list[1]) error receive a string not a list
+
+        # self.response.out.write(delete_stream_list[0])
+        for stream in delete_stream_list:
+            ops.delete_stream(str(stream))
+        # map(ops.delete_stream, delete_stream_list)
 
 
 class UnsubscribeStreamServiceHandler(webapp2.RequestHandler):
@@ -124,5 +128,6 @@ service = webapp2.WSGIApplication([
     ('/service-uploadimage', UploadImageServiceHandler),
     ('/service-create', ServiceHandlerTwo.CreateStreamServiceHandler),
     ('/service-deletestream', DeleteStreamServiceHandler),
-    ('/service-unsubscribestream', UnsubscribeStreamServiceHandler)
+    ('/service-unsubscribestream', UnsubscribeStreamServiceHandler),
+    ('/service-search', ServiceHandlerTwo.SearchServiceHandler)
 ], debug=True)

@@ -63,10 +63,10 @@ def _get_stream_dict(stream):
     stream_dict['Name'] = stream.name
     image_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
     if image_list:
-        stream_dict['LastPictDate'] = image_list[0].upload_date
+        stream_dict['LastPictDate'] = str(image_list[0].upload_date)  # Yaohua Mod
         stream_dict['NumberOfPict'] = len(image_list)
     else:
-        stream_dict['LastPictDate'] = stream.create_date
+        stream_dict['LastPictDate'] = str(stream.create_date)   # Yaohua Mod
         stream_dict['NumberOfPict'] = 0
     stream_dict['Views'] = stream.num_of_views
     return stream_dict
