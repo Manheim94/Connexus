@@ -6,15 +6,19 @@
 
 {% endblock %}
 {% block main_content %}
-
+<br><br>
+<h2>Stream Name: {{stream_id}}</h2>
   <!-- A List of Pictures-->
-
+{% for s in pict_list %}
+<img src="{{s}}" width="300" height="200"/>
+{% endfor %}
 
   <!-- Upload Area-->
 <form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data">
+    <!-- <input hidden name="stream_id" value="{{stream_id}}"/>-->
     <p>File Name</p> <input type="text" name="img_name"/>
     <input type="file" name="img"/> <br>
-    <p>Stream ID for testing:</p> <input type="text" name="stream_id" /> <br>
+    <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
     <input type="submit" value="upload"/>
 
 </form>

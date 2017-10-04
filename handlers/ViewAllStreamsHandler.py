@@ -23,7 +23,7 @@ class ViewAllStreamsHandler(webapp2.RequestHandler):
             request = {}
             request['user_id'] = current_user
             #request['stream_id'] = stream_id
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewallstream?' + urllib.urlencode(request)
+            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewallstreams?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
@@ -33,14 +33,23 @@ class ViewAllStreamsHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
-        stream_list=data['stream_list']
-        page_range=data['page_range']
+        stream_list=data['all_stream_list']
+        list_with_url=[]
+        for stream in stream_list:
+            stream_with_url=[]
+            stream_with_url.append(stream['CoverPage'])
+            view_stream_url="/view_single?stream_id="+ stream['Name']
+            stream_with_url.append(view_stream_url)
+            list_with_url.append(stream_with_url)
+
+        #page_range=data['page_range']
         logout_url = users.create_logout_url(utils.raw_logout_url)
 
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
-            'stream_list':stream_list
+            'stream_list':stream_list,
+            'stream_list_with_url':list_with_url
         }
 
 

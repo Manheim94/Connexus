@@ -23,7 +23,7 @@
                 <td>{{ s['LastPictDate'] }}</td>
                 <td>{{ s['NumberOfPict'] }}</td>
                 <td>{{ s['Views'] }}</td>
-                <td><input type="checkbox" name="delete_owned" value="aaa"></td>
+                <td><input type="checkbox" name="delete_owned" value="{{s['Name']}}"></td>
             </tr>
             {% endfor %}
         </table>
@@ -47,7 +47,7 @@
                 <td>{{ s['LastPictDate'] }}</td>
                 <td>{{ s['NumberOfPict'] }}</td>
                 <td>{{ s['Views'] }}</td>
-                <td><input type="checkbox" name="unsubscribe" value="aaa"></td>
+                <td><input type="checkbox" name="unsubscribe" value="{{s['Name']}}"></td>
             </tr>
             {% endfor %}
         </table>

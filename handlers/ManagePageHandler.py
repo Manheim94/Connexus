@@ -26,7 +26,6 @@ class ManagePageHandler(webapp2.RequestHandler):
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
-            #request['stream_id'] = 'stream1'
             url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-manage?' + urllib.urlencode(request)
 
             #url = 'https://services-dot-' + appName + '.appspot.com?' + urllib.urlencode(request)
@@ -56,7 +55,7 @@ class ManagePageHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 class ManagePageDeleteHandler(webapp2.RequestHandler):
-    form_fields={}
+    #form_fields={}
     def post(self):
 
         delete_list=self.request.get_all('delete_owned')
@@ -64,9 +63,10 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
         form_fields={
             'delete_list': delete_list
         }
+        #self.response.write(delete_list)
 
         try:
-            form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
+            form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
                 url='https://services-dot-hallowed-forge-181415.appspot.com/service-deletestream',
@@ -74,7 +74,7 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
                 method=urlfetch.POST,
                 headers=headers)
             self.response.write(result.content)
-            self.redirect('/manage')
+            #self.redirect('/manage')
 
         except urlfetch.Error:
             logging.exception('Caught exception fetching url')
@@ -88,10 +88,10 @@ class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
             'user_id': current_user
         }
         try:
-            form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
+            form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-deletestream', #need changing
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-unsubscribestream', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)
