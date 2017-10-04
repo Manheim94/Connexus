@@ -8,6 +8,11 @@
 {% block main_content %}
 
   <!-- A List of Cover Pictures-->
+{% for s in stream_list %}
+<p>{{s[2]}}</p>
+<a href="{{s['CoverPage']}}"><img src="{{s['CoverPage']}}" width="300" height="200"/></a>
+{% endfor %}
+
 
 <br><br>
 <form>
@@ -15,7 +20,7 @@
     <input type="radio" name="rate" value="5min">Every 5 minutes<br>
     <input type="radio" name="rate" value="1hour">Every 1 hour<br>
     <input type="radio" name="rate" value="1day">Every day<br>
-    <input type="submit" value="update"/>
+    <input type="submit" value="update_rate"/>
 </form>
 
 {% endblock %}

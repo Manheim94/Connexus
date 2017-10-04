@@ -37,9 +37,10 @@ class ViewAllStreamsHandler(webapp2.RequestHandler):
         list_with_url=[]
         for stream in stream_list:
             stream_with_url=[]
-            stream_with_url.append(stream['CoverPage'])
+            stream_with_url.append(stream['CoverPage']) #s0
             view_stream_url="/view_single?stream_id="+ stream['Name']
-            stream_with_url.append(view_stream_url)
+            stream_with_url.append(view_stream_url) #s1
+            stream_with_url.append(stream['Name']) #s2
             list_with_url.append(stream_with_url)
 
         #page_range=data['page_range']

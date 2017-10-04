@@ -58,9 +58,10 @@ class CreateNewStreamRequestHandler(webapp2.RequestHandler):
             returnvalue=json.loads(result.content)
             status=returnvalue['status']
             if(status==True):
-                self.redirect('/view_single?stream_id='+name)
+                self.redirect('/manage')
+                #self.redirect('/view_single?stream_id='+name)
             else:
-                self.redirect('')
+                self.redirect('/error')
 
 
         except urlfetch.Error:

@@ -13,10 +13,14 @@ class ErrorHandler(webapp2.RequestHandler):
 
     def render(self):
         logout_url = users.create_logout_url(utils.raw_logout_url)
+        current_user = users.get_current_user().email()
+        create_url='/create'
+
         template_values = {
             'logout_url': logout_url,
-            'current_user': 'haha'
+            'current_user': current_user,
+            'create_url': create_url
         }
-        template = utils.JINJA_ENVIRONMENT.get_template('fresh_manage.html')
+        template = utils.JINJA_ENVIRONMENT.get_template('fresh_error.html')
         self.response.write(template.render(template_values))
 
