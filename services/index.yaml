@@ -1,0 +1,5 @@
+indexes:
+- kind: Image
+  ancestor: yes
+  properties:
+  - name: upload_date
