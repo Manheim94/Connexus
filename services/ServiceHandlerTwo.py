@@ -91,9 +91,10 @@ class SearchServiceHandler(webapp2.RequestHandler):
         }
         self.response.write(json.dumps(return_info))
 
-
+'''
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
+'''
 
 
 
