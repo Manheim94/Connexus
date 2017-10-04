@@ -74,7 +74,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
             index = search.Index(name='streamSearch')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
-            #number_found = search_results.number_found
+            number_found = search_results.number_found
 
             streamList = []
             for doc in search_results:
@@ -86,14 +86,15 @@ class SearchServiceHandler(webapp2.RequestHandler):
 
         streamInfo = ops.get_search_stream(streamList)
         return_info = {
+            'num' : number_found,
             'streams': streamInfo
         }
         self.response.write(json.dumps(return_info))
 
-'''
+
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
-'''
+
 
 
 
