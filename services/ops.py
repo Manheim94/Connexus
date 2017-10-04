@@ -160,4 +160,18 @@ def get_search_stream(stream_name_list):
     return result
 
 
+def get_stream_owner(stream_name):
+    stream_list = Stream.query(Stream.name == stream_name).fetch()
+    d = {}
+    if stream_list:
+        stream = stream_list[0]
+        d = {"Id": stream.key.parent().get().pigeon_id}
+    return d
 
+
+def is_subscribed(name, pigeon_id):
+    pigeon_key = ndb.Key(Pigeon, pigeon_id)
+    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    sub_list = Subscription.query(Subscription.Pigeon_key == pigeon_key,
+                                  Subscription.Stream_key == stream_key).fetch()
+    return True if sub_list else False
