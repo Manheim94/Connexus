@@ -51,13 +51,24 @@ class ViewSingleStreamServiceHandler(webapp2.RequestHandler):
     def get(self):
         stream_id = self.request.get('stream_id')
         page_range = self.request.get('page_range')
+        user_id = self.request.get('user_id')
+
+        # get all picts in stream
         all_pict_list = ops.get_single_stream(stream_id)
-        pict_list = []
-        for i in range(min(page_range, len(all_pict_list))):
-            pict_list.append(all_pict_list[i])
+
+        # get the owner of the stream from the stream owner dict
+        owner = ops.get_stream_owner(stream_id)["Id"]  # It's a dict, need to get the Id
+        # check if the user is the owner of the stream
+        is_owned = (owner == user_id)
+
+        # get if the user subscribe this stream
+        is_subed = ops.is_subscribed(stream_id, user_id)
+
         return_info = {
-            'page_range': min(page_range, len(all_pict_list)),
-            'pict_list': all_pict_list
+            'page_range': min(int(page_range), len(all_pict_list)),
+            'pict_list': all_pict_list,
+            'is_subed': is_subed,
+            'is_owned': is_owned
         }
         self.response.write(json.dumps(return_info))
 
@@ -95,12 +106,13 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
         ops.create_image(img_comment, img_name, unicorn_url, stream_id)
 
         # redirect the user to the view single page
-        self.redirect("http://english.gov.cn/")
+        self.redirect(str("https://hallowed-forge-181415.appspot.com/view_single?stream_id=" + str(stream_id)))
         #webapp2.redirect("http://www.facebook.com")
 
 
 class DeleteStreamServiceHandler(webapp2.RequestHandler):
     def post(self):
+        # url request is a list
         delete_stream_string = self.request.get('delete_list')
         delete_stream_list = delete_stream_string.split(',')
         # delete the stream list using map method
@@ -114,11 +126,25 @@ class DeleteStreamServiceHandler(webapp2.RequestHandler):
 
 class UnsubscribeStreamServiceHandler(webapp2.RequestHandler):
     def post(self):
-        unsubscribe_stream_list = self.request.POST['unsubscribe_list']
-        user_id = self.request.POST['']
+        # unsubscribe_list is a string
+        unsubscribe_stream_string = self.request.get('unsubscribe_list')
+        # after split, get a list
+        unsubscribe_stream_list = unsubscribe_stream_string.split(',')
+
+        user_id = self.request.POST['user_id']
+
         # unsubscribe needs three parameters, so using for
         for stream in unsubscribe_stream_list:
-            ops.delete_subscription(user_id, stream)
+            ops.delete_subscription(user_id, str(stream))
+
+
+class SubscribeStreamServiceHandler(webapp2.RequestHandler):
+    def get(self):
+        user_id = self.request.get('user_id')
+        stream_id = self.request.get('stream_id')
+        # only if the user has not subscribed this stream, the sub func can be executed
+        if not ops.is_subscribed(stream_id, user_id):
+            ops.create_subscription(user_id, stream_id)
 
 
 service = webapp2.WSGIApplication([
@@ -129,5 +155,7 @@ service = webapp2.WSGIApplication([
     ('/service-create', ServiceHandlerTwo.CreateStreamServiceHandler),
     ('/service-deletestream', DeleteStreamServiceHandler),
     ('/service-unsubscribestream', UnsubscribeStreamServiceHandler),
-    ('/service-search', ServiceHandlerTwo.SearchServiceHandler)
+    ('/service-search', ServiceHandlerTwo.SearchServiceHandler),
+    ('/service-subscribestream', SubscribeStreamServiceHandler),
+    ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler)
 ], debug=True)
