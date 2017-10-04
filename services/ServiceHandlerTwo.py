@@ -91,11 +91,22 @@ class SearchServiceHandler(webapp2.RequestHandler):
         }
         self.response.write(json.dumps(return_info))
 
-'''
+
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
-'''
+        trending = ops.get_trending_stream();
+        return_info = {
+            'trending': trending,
+        }
+        self.response.write(json.dumps(return_info))
 
+
+
+'''
+class SendingReportHandler(webapp2.RequestHandler):
+    def get(self):
+        global count = count+1;
+'''
 
 
 
