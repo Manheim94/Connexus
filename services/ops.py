@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from google.appengine.ext import ndb
 
-from models import Image, Stream, Pigeon, Subscription
+from models import Image, Stream, Pigeon, Subscription, CronJob
 
 
 def create_stream(pigeon_id, name, cover_url,
@@ -160,4 +160,42 @@ def get_search_stream(stream_name_list):
     return result
 
 
+def get_stream_owner(stream_name):
+    stream_list = Stream.query(Stream.name == stream_name).fetch()
+    d = {}
+    if stream_list:
+        stream = stream_list[0]
+        d = {"Id": stream.key.parent().get().pigeon_id}
+    return d
 
+
+def is_subscribed(name, pigeon_id):
+    pigeon_key = ndb.Key(Pigeon, pigeon_id)
+    stream_key = ndb.Key(Stream, name, parent=pigeon_key)
+    sub_list = Subscription.query(Subscription.Pigeon_key == pigeon_key,
+                                  Subscription.Stream_key == stream_key).fetch()
+    return True if sub_list else False
+
+
+def get_cron_count():
+    cron = CronJob.query().fetch()
+    return cron[0].count
+
+
+def get_cron_destination():
+    cron = CronJob.query().fetch()
+    return cron[0].destination
+
+
+def set_cron_count(count):
+    cron = CronJob.query().fetch()
+    cron[0].count = count
+    cron[0].put()
+    return
+
+
+def set_cron_destination(des):
+    cron = CronJob.query().fetch()
+    cron[0].destination = des
+    cron[0].put()
+    return
