@@ -35,7 +35,13 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''create stream'''
         ops.create_stream(user_id, name, cover_url, sub_list, tag_list)
+
         return_info = {
             'status': True,
         }
         self.response.write(json.dumps(return_info))
+
+class SearchServiceHandler(webapp2.RequestHandler):
+    def post(self):
+        content = self.request.get('content')
+
