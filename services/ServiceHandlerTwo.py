@@ -78,15 +78,23 @@ class SearchServiceHandler(webapp2.RequestHandler):
 
             streamList = []
             for doc in search_results:
+
                 streamList.append( doc.fields[0].value )
 
         except search.Error:
             logging.exception('An error occurred on search.')
 
+        streamInfo = ops.get_search_stream(streamList)
         return_info = {
-            'streams': streamList
+            'streams': streamInfo
         }
         self.response.write(json.dumps(return_info))
+
+'''
+class TrendingServiceHandler(webapp2.RequestHandler):
+    def get(self):
+'''
+
 
 
 
