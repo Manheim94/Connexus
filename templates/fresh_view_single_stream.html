@@ -9,10 +9,11 @@
 <br><br>
 <h2>Stream Name: {{stream_id}}</h2>
   <!-- A List of Pictures-->
-{% for s in pict_list %}
+{% for s in pict_list[:page_range] %}
 <img src="{{s}}" width="300" height="200"/>
 {% endfor %}
 
+{% if is_owned %}
   <!-- Upload Area-->
 <form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data">
     <!-- <input hidden name="stream_id" value="{{stream_id}}"/>-->
@@ -22,7 +23,33 @@
     <input type="submit" value="upload"/>
 
 </form>
+{% endif %}
+
+<form action="{{view_single_show_more_handler_url}}" method ="get">
+    <input type="hidden" name="stream_id" value="{{stream_id}}"/>
+    <input type="hidden" name="page_range"  value="{{page_range}}" />
+    <input type="submit" value="Show More" />
+</form>
 
   <!-- Subscribe this-->
+{% if not is_subed %}
+<form action="{{view_single_subscribe_handler_url}}" method="get" >
+    <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
+    <input type="hidden" name="is_subed" value="{{is_subed}}" />
+    <input type="submit" value="subscribe"/>
+</form>
+
+{% endif %}
+
+{% if is_subed %}
+  <!-- Unsubscribe this-->
+<form action="{{view_single_subscribe_handler_url}}" method="get" >
+    <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
+    <input type="hidden" name="is_subed" value="{{is_subed}}" />
+    <input type="submit" value="unsubscribe"/>
+</form>
+
+{% endif %}
+
 
 {% endblock %}

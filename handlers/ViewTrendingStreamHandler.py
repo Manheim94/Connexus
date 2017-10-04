@@ -33,7 +33,7 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
-        stream_list=""#data['stream_list']
+        stream_list=data['trending']
         logout_url = users.create_logout_url(utils.raw_logout_url)
 
         template_values = {

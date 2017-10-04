@@ -28,7 +28,8 @@ from handlers.ManagePageHandler import ManagePageUnsubscribeHandler
 from handlers.CreateNewStreamHandler import CreateNewStreamRequestHandler
 from handlers.ViewSingleStreamHandler import UploadImageHandler
 from handlers.SearchStreamHandler import SearchSendRequestHandler
-
+from handlers.ViewSingleStreamHandler import ViewSingleShowMoreHandler
+from handlers.ViewSingleStreamHandler import ViewSingleSubscribeHandler
 from config import utils
 from google.appengine.api import users
 
@@ -65,7 +66,9 @@ app = webapp2.WSGIApplication([
     ('/unsubscribe_stream_handler_url',ManagePageUnsubscribeHandler),
     ('/create_stream_url',CreateNewStreamRequestHandler),
     ('/upload_image_handler_url',UploadImageHandler),
-    ('/search_send_request_handler_url', SearchSendRequestHandler)
+    ('/search_send_request_handler_url', SearchSendRequestHandler),
+    ('/view_single_show_more_handler_url',ViewSingleShowMoreHandler),
+    ('/view_single_subscribe_handler_url',ViewSingleSubscribeHandler)
 
 ], debug=True)
 

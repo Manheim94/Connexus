@@ -12,15 +12,22 @@ import logging
 
 
 class ViewSingleStreamHandler(webapp2.RequestHandler):
-   # stream_id=""
     def get(self):
         if not users.get_current_user():
             self.redirect(users.create_login_url(self.request.uri))
         else:
-            #global stream_id
             #stream_id = self.request.get('stream_id')
             self.render()
 
+    def getstreamid(self):
+        return self.request.get('stream_id')
+
+    def getpagerange(self):
+        if not self.request.get('page_range'):
+            cur_page_range=0
+        else:
+            cur_page_range=self.request.get('page_range')
+        return cur_page_range
 
     def render(self):
         #appName = app_identity.get_application_id()
@@ -29,17 +36,14 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         logout_url = users.create_logout_url(utils.raw_logout_url)
         data = {}
         stream_id= self.request.get('stream_id')
-        if not self.request.get('page_range'):
-            page_range=4
-        else:
-            page_range=self.request.get('page_range')
+
 
         try:
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
             request['stream_id'] = stream_id
-            request['page_range'] = 4
+            request['page_range'] = self.getpagerange()
             url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewsinglestream?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
@@ -50,11 +54,19 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
+        is_owned=data['is_owned']
+        is_subed=data['is_subed']
+
         pict_list=data['pict_list']
         page_range=data['page_range']
+
         logout_url = users.create_logout_url(utils.raw_logout_url)
         upload_image_handler_url='/upload_image_handler_url'
         upload_image_servic_url='https://services-dot-hallowed-forge-181415.appspot.com/service-uploadimage'
+        length=len(pict_list)
+
+        view_single_show_more_handler_url='/view_single_show_more_handler_url'
+        view_single_subscribe_handler_url='/view_single_subscribe_handler_url'
 
         template_values = {
             'logout_url': logout_url,
@@ -62,7 +74,11 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             'pict_list':pict_list,
             'page_range':page_range,
             'upload_image_handler_url':upload_image_servic_url,
-            'stream_id':stream_id
+            'stream_id':stream_id,
+            'view_single_show_more_handler_url':view_single_show_more_handler_url,
+            'is_owned':is_owned,
+            'is_subed':is_subed,
+            'view_single_subscribe_handler_url':view_single_subscribe_handler_url
         }
 
 
@@ -71,7 +87,52 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
 class ViewSingleShowMoreHandler(webapp2.RequestHandler):
     def get(self):
-        pass
+        page_range= int(self.request.get('page_range'))+1
+        page_range= str(page_range)
+        stream_id=self.request.get('stream_id')
+
+        self.redirect("/view_single?stream_id="+stream_id+"&page_range="+ page_range)
+
+
+class ViewSingleSubscribeHandler(webapp2.RequestHandler):
+    def get(self):
+        current_user = users.get_current_user().email()
+        stream_id= self.request.get('stream_id')
+        is_subed=self.request.get('is_subed')
+
+        if is_subed == "False":
+
+            try:
+                rpc = urlfetch.create_rpc()
+                request = {}
+                request['user_id'] = current_user
+                request['stream_id'] = stream_id
+                url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-subscribestream?' + urllib.urlencode(request)
+                urlfetch.make_fetch_call(rpc, url)
+
+            except Exception:
+                self.response.write("Error!<br>")
+                self.response.write(Exception)
+
+        else:
+            form_fields={
+                'unsubscribe_list': stream_id,
+                'user_id': current_user
+            }
+            try:
+                form_data = urllib.urlencode(form_fields)
+                headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+                result = urlfetch.fetch(
+                    url='https://services-dot-hallowed-forge-181415.appspot.com/service-unsubscribestream',
+                    payload=form_data,
+                    method=urlfetch.POST,
+                    headers=headers)
+                #self.redirect('/manage')
+
+            except urlfetch.Error:
+                logging.exception('Caught exception fetching url')
+
+        #self.redirect('/view_single?stream_id='+stream_id)
 
 #this is dead
 class UploadImageHandler(webapp2.RequestHandler):
@@ -96,7 +157,7 @@ class UploadImageHandler(webapp2.RequestHandler):
                 payload=form_data,
                 method=urlfetch.POST)
                 #,headers=headers)
-            self.response.write(result.content)
+            #self.response.write(result.content)
             self.redirect('/view_single')
 
         except urlfetch.Error:
