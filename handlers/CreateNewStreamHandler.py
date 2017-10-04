@@ -30,17 +30,26 @@ class CreateNewStreamRequestHandler(webapp2.RequestHandler):
     form_fields={}
     def post(self):
         current_user = users.get_current_user().email()
+        name= self.request.get('stream_name')
+        cover_url= self.request.get('cover_url')
+        subscribers = self.request.get('subscribers')
+        message = self.request.get('message')
+        tags = self.request.get('tags')
 
         form_fields={
             'user_id':current_user,
-            'name': "hopefullySuccess"
+            'name': name,
+            'cover_url':cover_url,
+            'subscribers': subscribers,
+            'message': message,
+            'tags': tags
         }
 
         try:
             form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-test', #need changing
+                url='https://services-dot-hallowed-forge-181415.appspot.com/service-create', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)
