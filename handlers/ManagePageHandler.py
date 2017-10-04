@@ -65,7 +65,6 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
             'delete_list': delete_list
         }
 
-        #self.response.write(delete_list)
         try:
             form_data = urllib.urlencode(ManagePageDeleteHandler.form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
