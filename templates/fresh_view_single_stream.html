@@ -28,7 +28,11 @@
 <form action="{{view_single_show_more_handler_url}}" method ="get">
     <input type="hidden" name="stream_id" value="{{stream_id}}"/>
     <input type="hidden" name="page_range"  value="{{page_range}}" />
+
+    {% if not is_all %}
     <input type="submit" value="Show More" />
+    {% endif %}
+
 </form>
 
   <!-- Subscribe this-->

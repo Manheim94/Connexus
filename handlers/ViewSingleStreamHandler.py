@@ -24,7 +24,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
     def getpagerange(self):
         if not self.request.get('page_range'):
-            cur_page_range=0
+            cur_page_range=4
         else:
             cur_page_range=self.request.get('page_range')
         return cur_page_range
@@ -68,6 +68,10 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
         view_single_show_more_handler_url='/view_single_show_more_handler_url'
         view_single_subscribe_handler_url='/view_single_subscribe_handler_url'
 
+        is_all=False
+        if(page_range==len(pict_list)):
+            is_all=True
+
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
@@ -78,7 +82,8 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             'view_single_show_more_handler_url':view_single_show_more_handler_url,
             'is_owned':is_owned,
             'is_subed':is_subed,
-            'view_single_subscribe_handler_url':view_single_subscribe_handler_url
+            'view_single_subscribe_handler_url':view_single_subscribe_handler_url,
+            'is_all':is_all
         }
 
 
@@ -87,7 +92,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
 class ViewSingleShowMoreHandler(webapp2.RequestHandler):
     def get(self):
-        page_range= int(self.request.get('page_range'))+1
+        page_range= int(self.request.get('page_range'))+4
         page_range= str(page_range)
         stream_id=self.request.get('stream_id')
 
