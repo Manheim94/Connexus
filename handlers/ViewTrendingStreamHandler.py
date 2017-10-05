@@ -34,6 +34,8 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             self.response.write(Exception)
 
         stream_list=data['trending']
+
+        rate= 'no' #data['rate']
         for stream in stream_list:
             stream['url']="/view_single?stream_id="+stream['Name']
         logout_url = users.create_logout_url(utils.raw_logout_url)
@@ -43,7 +45,8 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             'logout_url': logout_url,
             'current_user': current_user,
             'stream_list':stream_list,
-            'view_trending_update_rate_handler_url':view_trending_update_rate_handler_url
+            'view_trending_update_rate_handler_url':view_trending_update_rate_handler_url,
+            'rate':rate
         }
 
 
@@ -69,4 +72,4 @@ class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
-        self.redirect('/view_trending?rate='+rate)
+        self.redirect('/view_trending')
