@@ -32,7 +32,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''send email'''
         if len(sub_list)!=0:
-            mail.send_mail(sender='anything@pigeon.appspotmail.com',
+            mail.send_mail(sender= 'yaohua@hallowed-forge-181415.appspotmail.com'，
                            to=sub_list,
                            subject='You have subscribed the stream: ' + name,
                            body=message
@@ -57,7 +57,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         fields = [
             search.AtomField(name='name', value = name),
             search.TextField(name='tag', value = tags) ]
-        d = search.Document(doc_id=name, fields=fields)
+        d = search.Document(fields=fields)
         try:
             add_result = index.put(d)  # return array
         except search.Error:
@@ -102,11 +102,25 @@ class TrendingServiceHandler(webapp2.RequestHandler):
 
 
 
-'''
-class SendingReportHandler(webapp2.RequestHandler):
+
+class CronServiceHandler(webapp2.RequestHandler):
     def get(self):
-        global count = count+1;
-'''
+        count = ops.get_cron_count()
+        des = ops.get_cron_destination()
+        count = count+1;
+
+        '''count==des time due'''
+        if count == des:
+            count = 0
+            ops.set_cron_count(count)
+            self.send_simple_message()
+
+    def send_simple_message():
+        mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com'，
+                        to = ['ymh2ee@outlook.com','628zhao@gmail.com'],
+                        subject = 'From Pigeon Group',
+                        body = 'The trending streams are: '
+        )
 
 
 

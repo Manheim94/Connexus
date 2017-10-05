@@ -1,5 +1,0 @@
-cron:
-- description: send trending streams
-  url: /sendReport
-  target: services
-  schedule: every 5 minutes
