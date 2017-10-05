@@ -17,9 +17,14 @@ def create_stream(pigeon_id, name, cover_url,
     stream.tags = tag_list
     stream.put()
     for pid in sub_list:
-        if not pigeon_exists(pid):
-            create_pigeon(pid)
-        create_subscription(pid, name)
+        if pid != pigeon_id:
+            if not pigeon_exists(pid):
+                create_pigeon(pid)
+            suber_key = ndb.Key(Pigeon, pid)
+            sub = Subscription()
+            sub.Pigeon_key = suber_key
+            sub.Stream_key = stream.key
+            sub.put()
     return
 
 
@@ -129,7 +134,6 @@ def delete_subscription(pigeon_id, name):
 def get_trending_stream():
     stream_list = Stream.query().fetch()
     for stream in stream_list:
-        stream = stream_list[0]
         # count the number of views and discard the overtime logs
         delta = timedelta(hours=1)
         for i, dt in enumerate(stream.view_dates):
