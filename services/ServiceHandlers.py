@@ -157,5 +157,6 @@ service = webapp2.WSGIApplication([
     ('/service-unsubscribestream', UnsubscribeStreamServiceHandler),
     ('/service-search', ServiceHandlerTwo.SearchServiceHandler),
     ('/service-subscribestream', SubscribeStreamServiceHandler),
-    ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler)
+    ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler),
+    ('/service-cron', ServiceHandlerTwo.CronServiceHandler)
 ], debug=True)
