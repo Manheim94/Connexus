@@ -32,7 +32,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''send email'''
         if len(sub_list)!=0:
-            mail.send_mail(sender= 'yaohua@hallowed-forge-181415.appspotmail.com'，
+            mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com'，
                            to=sub_list,
                            subject='You have subscribed the stream: ' + name,
                            body=message
