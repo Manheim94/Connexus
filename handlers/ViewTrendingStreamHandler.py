@@ -23,7 +23,7 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             request = {}
             request['user_id'] = current_user
             #request['stream_id'] = stream_id
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewallstream?' + urllib.urlencode(request)
+            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-treanding?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
@@ -34,6 +34,8 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             self.response.write(Exception)
 
         stream_list=data['trending']
+        for stream in stream_list:
+            stream['url']="/view_single?stream_id="+stream['Name']
         logout_url = users.create_logout_url(utils.raw_logout_url)
 
         template_values = {

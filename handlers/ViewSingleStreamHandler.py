@@ -132,7 +132,7 @@ class ViewSingleSubscribeHandler(webapp2.RequestHandler):
             except urlfetch.Error:
                 logging.exception('Caught exception fetching url')
 
-        #self.redirect('/view_single?stream_id='+stream_id)
+        self.redirect('/view_single?stream_id='+stream_id)
 
 #this is dead
 class UploadImageHandler(webapp2.RequestHandler):

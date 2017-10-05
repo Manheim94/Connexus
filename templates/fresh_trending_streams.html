@@ -9,8 +9,9 @@
 
   <!-- A List of Cover Pictures-->
 {% for s in stream_list %}
-<p>{{s[2]}}</p>
-<a href="{{s['CoverPage']}}"><img src="{{s['CoverPage']}}" width="300" height="200"/></a>
+<p>{{s['Name']}}</p>
+<a href="{{s['url']}}"><img src="{{s['CoverPage']}}" width="300" height="200"/></a>
+<p>{{s['NumberOfViews']}} views</p>
 {% endfor %}
 
 
