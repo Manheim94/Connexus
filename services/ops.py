@@ -44,7 +44,10 @@ def get_sub_stream(pigeon_id):
     pigeon_key = ndb.Key(Pigeon, pigeon_id)
     sub_list = Subscription.query(
         Subscription.Pigeon_key == pigeon_key).fetch()
-    stream_list = map(lambda sub: sub.Stream_key.get(), sub_list)
+    stream_list = []
+    for sub in sub_list:
+        if sub.Stream_key.get():
+            stream_list.append(sub.Stream_key.get())
     return map(_get_stream_dict, stream_list)
 
 
