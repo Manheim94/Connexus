@@ -121,6 +121,12 @@ class DeleteStreamServiceHandler(webapp2.RequestHandler):
         # self.response.out.write(delete_stream_list[0])
         for stream in delete_stream_list:
             ops.delete_stream(str(stream))
+            # delete the stream in the google cloud storage
+            try:
+                stream_path = "/hallowed-forge-181415.appspot.com/" + str(stream) + "/"
+                gcs.delete(stream_path)
+            except gcs.NotFoundError:
+                pass
         # map(ops.delete_stream, delete_stream_list)
 
 
