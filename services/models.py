@@ -26,5 +26,6 @@ class Subscription(ndb.Model):
 
 
 class CronJob(ndb.Model):
+    pid = ndb.StringProperty()
     count = ndb.IntegerProperty()
     destination = ndb.IntegerProperty()
