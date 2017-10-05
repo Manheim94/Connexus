@@ -61,7 +61,7 @@ def create_pigeon(pigeon_id):
 def _get_stream_dict(stream):
     stream_dict = dict()
     stream_dict['Name'] = stream.name
-    image_list = Image.query(ancestor=stream.key).order(-Image.upload_date).fetch()
+    image_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
     if image_list:
         stream_dict['LastPictDate'] = str(image_list[0].upload_date)  # Yaohua Mod
         stream_dict['NumberOfPict'] = len(image_list)
@@ -93,7 +93,7 @@ def get_single_stream(name):
     stream.num_of_views = len(stream.view_dates)
     stream.put()
     # return images
-    img_list = Image.query(ancestor=stream.key).order(-Image.upload_date).fetch()
+    img_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
     return map(lambda img: img.url, img_list)
 
 
@@ -127,7 +127,7 @@ def delete_subscription(pigeon_id, name):
 
 
 def get_trending_stream():
-    stream_list = Stream.query().order(-Stream.num_of_views).fetch(3)
+    stream_list = Stream.query().order(Stream.num_of_views).fetch(3)
     return map(lambda s: {"Name": s.name,
                           "CoverPage": s.cover_url,
                           "NumberOfViews": s.num_of_views},
