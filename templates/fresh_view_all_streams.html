@@ -9,8 +9,12 @@
 <h3>View All Streams</h3>
   <!-- A List of Cover Pictures-->
 {% for s in stream_list_with_url %}
-<p>{{s[2]}}</p>
-<a href="{{s[1]}}"><img src="{{s[0]}}" width="300" height="200"/></a>
+
+<div style="display:inline">
+    <label>{{s[2]}}</label>
+    <a href="{{s[1]}}" ><img src="{{s[0]}}" width="300" height="200"/></a>
+</div>
+
 {% endfor %}
 
 
