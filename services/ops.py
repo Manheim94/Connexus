@@ -199,25 +199,33 @@ def is_subscribed(name, pigeon_id):
     return True if sub_list else False
 
 
-def get_cron_count():
-    cron = CronJob.query().fetch()
+def create_cron(pigeon_id):
+    cron = CronJob()
+    cron.pid = pigeon_id
+    cron.destination = 12
+    cron.count = 0
+    cron.put()
+
+
+def get_cron_count(pigeon_id):
+    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
     return cron[0].count
 
 
-def get_cron_destination():
-    cron = CronJob.query().fetch()
+def get_cron_destination(pigeon_id):
+    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
     return cron[0].destination
 
 
-def set_cron_count(count):
-    cron = CronJob.query().fetch()
+def set_cron_count(count, pigeon_id):
+    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
     cron[0].count = count
     cron[0].put()
     return
 
 
-def set_cron_destination(des):
-    cron = CronJob.query().fetch()
+def set_cron_destination(des, pigeon_id):
+    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
     cron[0].destination = des
     cron[0].put()
     return
