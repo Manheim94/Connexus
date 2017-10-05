@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from google.appengine.ext import ndb
 
-from models import Image, Stream, Pigeon, Subscription, CronJob
+from models import Image, Stream, Pigeon, Subscription, CronJob, Count
 
 
 def create_stream(pigeon_id, name, cover_url,
@@ -63,6 +63,7 @@ def create_pigeon(pigeon_id):
     pigeon.key = pigeon_key
     pigeon.pigeon_id = pigeon_id
     pigeon.put()
+    create_cron(pigeon_id)
     return
 
 
@@ -199,33 +200,61 @@ def is_subscribed(name, pigeon_id):
     return True if sub_list else False
 
 
-def create_cron(pigeon_id):
-    cron = CronJob()
-    cron.pid = pigeon_id
-    cron.destination = 12
-    cron.count = 0
-    cron.put()
-
-
-def get_cron_count(pigeon_id):
-    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
-    return cron[0].count
-
-
-def get_cron_destination(pigeon_id):
-    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
-    return cron[0].destination
-
-
-def set_cron_count(count, pigeon_id):
-    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
-    cron[0].count = count
-    cron[0].put()
+def update_count():
+    count_list = Count.query().fetch()
+    count_list[0].c1 += 1
+    count_list[0].c2 += 1
+    count_list[0].c3 += 1
+    count_list[0].put()
     return
 
 
+def set_c1_zero():
+    count_list = Count.query().fetch()
+    count_list[0].c1 = 0
+    count_list[0].put()
+    return
+
+
+def set_c2_zero():
+    count_list = Count.query().fetch()
+    count_list[0].c2 = 0
+    count_list[0].put()
+    return
+
+
+def set_c3_zero():
+    count_list = Count.query().fetch()
+    count_list[0].c3 = 0
+    count_list[0].put()
+    return
+
+
+def create_cron(pigeon_id):
+    cron = CronJob()
+    cron.pid = pigeon_id
+    cron.destination = -1
+    cron.put()
+
+
+def get_cron_pigeon_id_list(des):
+    cron_list = CronJob.query(CronJob.destination == des).fetch()
+    pigeon_id_list = []
+    for c in cron_list:
+        pigeon_id_list.append(c.pid)
+    return pigeon_id_list
+
+
+def get_cron_destination(pigeon_id):
+    cron_list = CronJob.query(CronJob.pid == pigeon_id).fetch()
+    if cron_list:
+        return cron_list.destination
+    return -1
+
+
 def set_cron_destination(des, pigeon_id):
-    cron = CronJob.query(CronJob.pid == pigeon_id).fetch()
-    cron[0].destination = des
-    cron[0].put()
+    cron_list = CronJob.query(CronJob.pid == pigeon_id).fetch()
+    if cron_list:
+        cron_list[0].destination = des
+        cron_list[0].put()
     return
