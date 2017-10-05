@@ -57,7 +57,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         fields = [
             search.AtomField(name='name', value = name),
             search.TextField(name='tag', value = tags) ]
-        d = search.Document(doc_id=name, fields=fields)
+        d = search.Document(fields=fields)
         try:
             add_result = index.put(d)  # return array
         except search.Error:
