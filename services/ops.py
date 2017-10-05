@@ -127,6 +127,18 @@ def delete_subscription(pigeon_id, name):
 
 
 def get_trending_stream():
+    stream_list = Stream.query().fetch()
+    for stream in stream_list:
+        stream = stream_list[0]
+        # count the number of views and discard the overtime logs
+        delta = timedelta(hours=1)
+        for i, dt in enumerate(stream.view_dates):
+            if datetime.now() - dt < delta:
+                stream.view_dates = stream.view_dates[i:]
+                break
+        stream.view_dates.append(datetime.now())
+        stream.num_of_views = len(stream.view_dates)
+        stream.put()
     stream_list = Stream.query().order(Stream.num_of_views).fetch()
     return map(lambda s: {"Name": s.name,
                           "CoverPage": s.cover_url,
