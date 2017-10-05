@@ -94,7 +94,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
 
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
-        trending = ops.get_trending_stream();
+        trending = ops.get_trending_stream()
         return_info = {
             'trending': trending,
         }
@@ -107,7 +107,7 @@ class CronServiceHandler(webapp2.RequestHandler):
     def get(self):
         count = ops.get_cron_count()
         des = ops.get_cron_destination()
-        count = count+1;
+        count = count+1
 
         '''count==des time due'''
         if count == des:
@@ -116,7 +116,7 @@ class CronServiceHandler(webapp2.RequestHandler):
             self.send_simple_message()
 
     def send_simple_message():
-        mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com'，
+        mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com',
                         to = ['ymh2ee@outlook.com','628zhao@gmail.com'],
                         subject = 'From Pigeon Group',
                         body = 'The trending streams are: '
