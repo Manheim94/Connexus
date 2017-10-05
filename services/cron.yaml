@@ -1,4 +1,0 @@
-cron:
-- description: send trending streams
-  url: https://services-dot-hallowed-forge-181415.appspot.com/service-cron
-  schedule: every 5 minutes
