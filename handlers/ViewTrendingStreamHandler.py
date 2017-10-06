@@ -34,8 +34,10 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             self.response.write(Exception)
 
         stream_list=data['trending']
+        ratenum= data['rate']
+        ratedict = {-1: "no", 1: "5min", 12: "1hour", 288: "1day"}
+        rate = ratedict[ratenum]
 
-        rate= data['rate']
         for stream in stream_list:
             stream['url']="/view_single?stream_id="+stream['Name']
         logout_url = users.create_logout_url(utils.raw_logout_url)
@@ -55,7 +57,8 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
 
 class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
     def get(self):
-        rate=self.response.get('rate')
+        rate=self.request.get('rate')
+
         current_user = users.get_current_user().email()
         data={}
         try:
@@ -65,7 +68,7 @@ class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
             request['rate'] = rate
             url = 'https://services-dot-hallowed-forge-181415.appspot.com/service-cron?' + urllib.urlencode(request)
             urlfetch.make_fetch_call(rpc, url)
-            response = rpc.get_result()
+            #response = rpc.get_result()
             #data = json.loads(response.content)
 
         except Exception:
