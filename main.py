@@ -75,8 +75,9 @@ app = webapp2.WSGIApplication([
     ('/view_single_subscribe_handler_url',ViewSingleSubscribeHandler),
     ('/view_trending_update_rate_handler_url', ViewTrendingUpdateRateHandler),
     ('/feeling_lucky',FeelingLuckyPageHandler),
-    ('/callcron', CallCron)
-    ('/social',SocialPageHandler)
+    ('/callcron', CallCron),
+    ('/social', SocialPageHandler)
+# add something!
 
 ], debug=True)
 
