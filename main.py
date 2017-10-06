@@ -31,6 +31,7 @@ from handlers.SearchStreamHandler import SearchSendRequestHandler
 from handlers.ViewSingleStreamHandler import ViewSingleShowMoreHandler
 from handlers.ViewSingleStreamHandler import ViewSingleSubscribeHandler
 from handlers.ViewTrendingStreamHandler import ViewTrendingUpdateRateHandler
+from handlers.FeelingLuckyPageHandler import FeelingLuckyPageHandler
 from config import utils
 from google.appengine.api import users
 
@@ -70,7 +71,8 @@ app = webapp2.WSGIApplication([
     ('/search_send_request_handler_url', SearchSendRequestHandler),
     ('/view_single_show_more_handler_url',ViewSingleShowMoreHandler),
     ('/view_single_subscribe_handler_url',ViewSingleSubscribeHandler),
-    ('/view_trending_update_rate_handler_url', ViewTrendingUpdateRateHandler)
+    ('/view_trending_update_rate_handler_url', ViewTrendingUpdateRateHandler),
+    ('/feeling_lucky',FeelingLuckyPageHandler)
 
 ], debug=True)
 
