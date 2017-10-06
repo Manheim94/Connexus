@@ -105,17 +105,20 @@ class TrendingServiceHandler(webapp2.RequestHandler):
 
 class CronServiceHandler(webapp2.RequestHandler):
     def get(self):
+        print('success')
         count = ops.get_cron_count()
         des = ops.get_cron_destination()
         count = count+1
 
-        '''count==des time due'''
+        '''
         if count == des:
             count = 0
             ops.set_cron_count(count)
             self.send_simple_message()
+        '''
+        self.send_simple_message()
 
-    def send_simple_message():
+    def send_simple_message(self):
         mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com',
                         to = ['ymh2ee@outlook.com','628zhao@gmail.com'],
                         subject = 'From Pigeon Group',
