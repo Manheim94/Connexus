@@ -1,6 +1,5 @@
 cron:
-
-- description: email bomb
-  url: /service-cron
-  target: services
+- description: send trending email
+  url: /callcron
   schedule: every 5 mins
+  timezone: US/Central

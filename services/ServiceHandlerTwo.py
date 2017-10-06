@@ -118,29 +118,42 @@ class CronServiceHandler(webapp2.RequestHandler):
         if(count1==1):
             count1=0
             userList = ops.get_cron_pigeon_id_list(1)
-            self.send_simple_message(userList)
+            if userList:
+                for i in range(len(userList)):
+                    self.send_simple_message(userList[i])
 
         if(count2==12):
             count2=0
             userList = ops.get_cron_pigeon_id_list(12)
-            self.send_simple_message(userList)
+            if userList:
+                for i in range(len(userList)):
+                    self.send_simple_message(userList[i])
 
         if(count3==288):
             count3=0
             userList = ops.get_cron_pigeon_id_list(288)
-            self.send_simple_message(userList)
+            if userList:
+                for i in range(len(userList)):
+                    self.send_simple_message(userList[i])
 
-        ops.set_c1(0)
-        ops.set_c2(0)
-        ops.set_c3(0)
+        ops.set_c1(count1)
+        ops.set_c2(count2)
+        ops.set_c3(count3)
 
 
 
-    def send_simple_message(self,userList):
-        mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com',
-                        to = userList,
+    def send_simple_message(self,email):
+        msg=""
+        for stream in ops.get_trending_stream():
+            msg += " Trending Stream Name: " + stream['Name']
+            url = 'https://hallowed-forge-181415.appspot.com/view_single?stream_id='+stream['Name']
+            msg +=' Click Here for More: '
+            msg += url
+
+        mail.send_mail(sender='pigeon@hallowed-forge-181415.appspotmail.com',
+                        to = str(email),
                         subject = 'From Pigeon Group',
-                        body = 'The trending streams are: '
+                        body = msg
         )
 
 
