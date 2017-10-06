@@ -179,5 +179,6 @@ service = webapp2.WSGIApplication([
     ('/service-subscribestream', SubscribeStreamServiceHandler),
     ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler),
     ('/service-cron', ServiceHandlerTwo.CronServiceHandler),
-    ('/service-lucky', IFeelLuckyServiceHandler)
+    ('/service-lucky', IFeelLuckyServiceHandler),
+    ('/service-setrate', ServiceHandlerTwo.SetDestinationService)
 ], debug=True)
