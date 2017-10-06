@@ -254,7 +254,7 @@ def get_cron_pigeon_id_list(des):
 def get_cron_destination(pigeon_id):
     cron_list = CronJob.query(CronJob.pid == pigeon_id).fetch()
     if cron_list:
-        return cron_list.destination
+        return cron_list[0].destination
     return -1
 
 
