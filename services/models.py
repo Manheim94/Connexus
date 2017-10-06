@@ -16,8 +16,9 @@ class Stream(ndb.Model):
     tags = ndb.StringProperty(repeated=True)
     view_dates = ndb.DateTimeProperty(repeated=True)
 
+
 class Pigeon(ndb.Model):
-    pigeon_id = ndb.StringProperty() # user's id
+    pigeon_id = ndb.StringProperty()  # user's id
 
 
 class Subscription(ndb.Model):
@@ -27,5 +28,10 @@ class Subscription(ndb.Model):
 
 class CronJob(ndb.Model):
     pid = ndb.StringProperty()
-    count = ndb.IntegerProperty()
     destination = ndb.IntegerProperty()
+
+
+class Count(ndb.Model):
+    c1 = ndb.IntegerProperty()
+    c2 = ndb.IntegerProperty()
+    c3 = ndb.IntegerProperty()
