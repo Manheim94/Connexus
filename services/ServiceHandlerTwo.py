@@ -105,22 +105,37 @@ class TrendingServiceHandler(webapp2.RequestHandler):
 
 class CronServiceHandler(webapp2.RequestHandler):
     def get(self):
-        print('success')
-        count = ops.get_cron_count()
-        des = ops.get_cron_destination()
-        count = count+1
+        count1 = ops.get_c1()
+        count2 = ops.get_c2()
+        count3 = ops.get_c2()
 
-        '''
-        if count == des:
-            count = 0
-            ops.set_cron_count(count)
-            self.send_simple_message()
-        '''
-        self.send_simple_message()
+        count1 = count1+1
+        count2 = count2+1
+        count3 = count3+1
+        if(count1==1):
+            count1=0
+            userList = ops.get_cron_pigeon_id_list(1)
+            self.send_simple_message(userList)
 
-    def send_simple_message(self):
+        if(count2==12):
+            count2=0
+            userList = ops.get_cron_pigeon_id_list(12)
+            self.send_simple_message(userList)
+
+        if(count3==288):
+            count3=0
+            userList = ops.get_cron_pigeon_id_list(288)
+            self.send_simple_message(userList)
+
+        ops.set_c1(0)
+        ops.set_c2(0)
+        ops.set_c3(0)
+
+
+
+    def send_simple_message(self,userList):
         mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com',
-                        to = ['ymh2ee@outlook.com','628zhao@gmail.com'],
+                        to = userList,
                         subject = 'From Pigeon Group',
                         body = 'The trending streams are: '
         )
