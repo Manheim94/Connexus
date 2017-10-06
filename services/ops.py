@@ -200,9 +200,19 @@ def is_subscribed(name, pigeon_id):
     return True if sub_list else False
 
 
-def get_count():
+def get_c1():
     count_list = Count.query().fetch()
-    return count_list[0].c1, count_list[0].c2, count_list[0].c3
+    return count_list[0].c1
+
+
+def get_c2():
+    count_list = Count.query().fetch()
+    return count_list[0].c2
+
+
+def get_c3():
+    count_list = Count.query().fetch()
+    return count_list[0].c3
 
 
 def set_c1(i):
