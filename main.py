@@ -35,6 +35,7 @@ from handlers.FeelingLuckyPageHandler import FeelingLuckyPageHandler
 from handlers.SocialPageHandler import SocialPageHandler
 from config import utils
 from google.appengine.api import users
+from handlers.CallCron import CallCron
 
 
 
@@ -74,6 +75,7 @@ app = webapp2.WSGIApplication([
     ('/view_single_subscribe_handler_url',ViewSingleSubscribeHandler),
     ('/view_trending_update_rate_handler_url', ViewTrendingUpdateRateHandler),
     ('/feeling_lucky',FeelingLuckyPageHandler),
+    ('/callcron', CallCron)
     ('/social',SocialPageHandler)
 
 ], debug=True)
