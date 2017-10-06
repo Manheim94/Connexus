@@ -1,4 +1,3 @@
-
 # Database related operation
 from datetime import datetime, timedelta
 
@@ -200,32 +199,38 @@ def is_subscribed(name, pigeon_id):
     return True if sub_list else False
 
 
-def update_count():
+def get_c1():
     count_list = Count.query().fetch()
-    count_list[0].c1 += 1
-    count_list[0].c2 += 1
-    count_list[0].c3 += 1
+    return count_list[0].c1
+
+
+def get_c2():
+    count_list = Count.query().fetch()
+    return count_list[0].c2
+
+
+def get_c3():
+    count_list = Count.query().fetch()
+    return count_list[0].c3
+
+
+def set_c1(i):
+    count_list = Count.query().fetch()
+    count_list[0].c1 = i
     count_list[0].put()
     return
 
 
-def set_c1_zero():
+def set_c2(i):
     count_list = Count.query().fetch()
-    count_list[0].c1 = 0
+    count_list[0].c2 = i
     count_list[0].put()
     return
 
 
-def set_c2_zero():
+def set_c3(i):
     count_list = Count.query().fetch()
-    count_list[0].c2 = 0
-    count_list[0].put()
-    return
-
-
-def set_c3_zero():
-    count_list = Count.query().fetch()
-    count_list[0].c3 = 0
+    count_list[0].c3 = i
     count_list[0].put()
     return
 
