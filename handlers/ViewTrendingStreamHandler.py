@@ -5,6 +5,7 @@ from config import utils
 from google.appengine.api import urlfetch
 import urllib
 import json
+import time
 
 class ViewTrendingStreamHandler(webapp2.RequestHandler):
     def get(self):
@@ -66,7 +67,7 @@ class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
             request = {}
             request['user_id'] = current_user
             request['rate'] = rate
-            url = 'https://services-dot-hallowed-forge-181415.appspot.com/service-cron?' + urllib.urlencode(request)
+            url = 'https://services-dot-hallowed-forge-181415.appspot.com/service-setrate?' + urllib.urlencode(request)
             urlfetch.make_fetch_call(rpc, url)
             #response = rpc.get_result()
             #data = json.loads(response.content)
@@ -75,4 +76,5 @@ class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
+        time.sleep(0.2)
         self.redirect('/view_trending')
