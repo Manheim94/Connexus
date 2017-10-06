@@ -11,6 +11,8 @@ from google.appengine.api import images
 import lib.cloudstorage as gcs
 import re
 
+import random
+
 
 #from google.storage import speckle
 #import cloudstorage as gcs
@@ -153,6 +155,18 @@ class SubscribeStreamServiceHandler(webapp2.RequestHandler):
             ops.create_subscription(user_id, stream_id)
 
 
+class IFeelLuckyServiceHandler(webapp2.RequestHandler):
+    def get(self):
+        all_stream_list = ops.get_all_stream()
+        lucky_stream_num = int(random.random() * len(all_stream_list))
+        lucky_stream = all_stream_list[lucky_stream_num]
+        return_info = {
+            'lucky_stream': lucky_stream
+        }
+        self.response.content_type = 'text/html'
+        self.response.write(json.dumps(return_info))
+
+
 service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
@@ -164,5 +178,6 @@ service = webapp2.WSGIApplication([
     ('/service-search', ServiceHandlerTwo.SearchServiceHandler),
     ('/service-subscribestream', SubscribeStreamServiceHandler),
     ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler),
-    ('/service-cron', ServiceHandlerTwo.CronServiceHandler)
+    ('/service-cron', ServiceHandlerTwo.CronServiceHandler),
+    ('/service-lucky', IFeelLuckyServiceHandler)
 ], debug=True)
