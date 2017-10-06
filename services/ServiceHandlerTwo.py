@@ -94,9 +94,12 @@ class SearchServiceHandler(webapp2.RequestHandler):
 
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
+        userid = self.request.get('user_id')
+        destination = ops.get_cron_destination(userid)
         trending = ops.get_trending_stream()
         return_info = {
-            'trending': trending,
+            'rate' : destination,
+            'trending': trending
         }
         self.response.write(json.dumps(return_info))
 
@@ -141,4 +144,15 @@ class CronServiceHandler(webapp2.RequestHandler):
         )
 
 
-
+class SetDestinationService(webapp2.RequestHandler):
+    def get(self):
+        userid = self.request.get('user_id')
+        desti = self.request.get('rate')
+        if desti =='no':
+            ops.set_cron_destination(-1, userid)
+        if desti == '5min':
+            ops.set_cron_destination(1, userid)
+        if desti == '1hour':
+            ops.set_cron_destination(12, userid)
+        if desti == '1day':
+            ops.set_cron_destination(288, userid)
