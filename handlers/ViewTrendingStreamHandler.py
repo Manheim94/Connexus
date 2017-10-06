@@ -34,7 +34,9 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
             self.response.write(Exception)
 
         stream_list=data['trending']
-        rate= data['rate']
+        ratenum= data['rate']
+        ratedict = {-1: "no", 1: "5min", 12: "1hour", 288: "1day"}
+        rate = ratedict[ratenum]
 
         for stream in stream_list:
             stream['url']="/view_single?stream_id="+stream['Name']
@@ -55,7 +57,8 @@ class ViewTrendingStreamHandler(webapp2.RequestHandler):
 
 class ViewTrendingUpdateRateHandler(webapp2.RequestHandler):
     def get(self):
-        rate=self.response.get('rate')
+        rate=self.request.get('rate')
+
         current_user = users.get_current_user().email()
         data={}
         try:
