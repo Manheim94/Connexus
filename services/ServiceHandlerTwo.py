@@ -110,7 +110,7 @@ class CronServiceHandler(webapp2.RequestHandler):
     def get(self):
         count1 = ops.get_c1()
         count2 = ops.get_c2()
-        count3 = ops.get_c2()
+        count3 = ops.get_c3()
 
         count1 = count1+1
         count2 = count2+1
@@ -150,7 +150,12 @@ class CronServiceHandler(webapp2.RequestHandler):
             msg +=' Click Here for More: '
             msg += url
 
-        mail.send_mail(sender='pigeon@hallowed-forge-181415.appspotmail.com',
+        mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
+                       to='ee382vta@gmail.com',
+                       subject='From Pigeon Group',
+                       body=msg
+                       )
+        mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
                         to = str(email),
                         subject = 'From Pigeon Group',
                         body = msg
