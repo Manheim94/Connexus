@@ -2,6 +2,53 @@
 
 {% block head_title %}
 
+
+
+
+<!--<script>-->
+  <!--window.fbAsyncInit = function() {-->
+    <!--FB.init({-->
+      <!--appId      : '1314086012033594',-->
+      <!--cookie     : true,-->
+      <!--xfbml      : true,-->
+      <!--version    : 'v2.8'-->
+    <!--});-->
+    <!--FB.AppEvents.logPageView();-->
+  <!--};-->
+
+  <!--(function(d, s, id){-->
+     <!--var js, fjs = d.getElementsByTagName(s)[0];-->
+     <!--if (d.getElementById(id)) {return;}-->
+     <!--js = d.createElement(s); js.id = id;-->
+     <!--js.src = "//connect.facebook.net/en_US/sdk.js";-->
+     <!--fjs.parentNode.insertBefore(js, fjs);-->
+   <!--}(document, 'script', 'facebook-jssdk'));-->
+
+
+<!--FB.getLoginStatus(function(response) {-->
+    <!--statusChangeCallback(response);-->
+<!--});-->
+
+
+
+<!--function checkLoginState() {-->
+  <!--FB.getLoginStatus(function(response) {-->
+    <!--statusChangeCallback(response);-->
+  <!--});-->
+<!--}-->
+    <!---->
+
+<!--</script>-->
+
+
+
+
+
+
+
+
+
+
 <title>Connex: Social</title>
 <script>
   // This is called with the results from from FB.getLoginStatus().
@@ -77,14 +124,24 @@
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+
+  FB.logout(function(response) {
+   // Person is now logged out
+});
+
 </script>
 
 {% endblock %}
 {% block main_content %}
 
 <h3> Log in with Facebook</h3>
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+
+<fb:login-button
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
 </fb:login-button>
+
+<button onclick=FB.logout()>Log Out</button>
 
 <div id="status">
 </div>
