@@ -85,7 +85,7 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
 
         unicorn = images.resize(unicorn, 500, 500)
         # find the right bucket-stream path
-        b = "/hallowed-forge-181415.appspot.com/" + str(stream_id)
+        b = "/pigeonhole-apt.appspot.com/" + str(stream_id)
 
         # much be post!
         img_real_name = self.request.POST['img'].filename
@@ -102,13 +102,13 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
 
         # generate the public url
         # not test yet TODO: test the url
-        unicorn_url = "https://storage.googleapis.com/hallowed-forge-181415.appspot.com/" \
+        unicorn_url = "https://storage.googleapis.com/pigeonhole-apt.appspot.com/" \
                       + str(stream_id) + "/" + str(img_name) + "." + str(img_real_type).lower()
         # back to ndb server
         ops.create_image(img_comment, img_name, unicorn_url, stream_id)
 
         # redirect the user to the view single page
-        self.redirect(str("https://hallowed-forge-181415.appspot.com/view_single?stream_id=" + str(stream_id)))
+        self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
         #webapp2.redirect("http://www.facebook.com")
 
 
@@ -125,7 +125,7 @@ class DeleteStreamServiceHandler(webapp2.RequestHandler):
             ops.delete_stream(str(stream))
             # delete the stream in the google cloud storage
             try:
-                stream_path = "/hallowed-forge-181415.appspot.com/" + str(stream) + "/"
+                stream_path = "/pigeonhole-apt.appspot.com/" + str(stream) + "/"
                 gcs.delete(stream_path)
             except gcs.NotFoundError:
                 pass
