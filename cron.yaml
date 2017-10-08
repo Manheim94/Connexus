@@ -1,5 +1,5 @@
 cron:
 - description: send trending email
   url: /callcron
-  schedule: every 1 mins
+  schedule: every 5 mins
   timezone: US/Central
