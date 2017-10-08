@@ -50,7 +50,7 @@ class CreateNewStreamRequestHandler(webapp2.RequestHandler):
             form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-create', #need changing
+                url='https://services-dot-pigeonhole-apt.appspot.com/service-create', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)

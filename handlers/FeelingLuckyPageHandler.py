@@ -22,7 +22,7 @@ class FeelingLuckyPageHandler(webapp2.RequestHandler):
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-lucky?' + urllib.urlencode(request)
+            url= 'https://services-dot-pigeonhole-apt.appspot.com/service-lucky?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()

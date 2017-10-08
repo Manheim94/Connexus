@@ -18,7 +18,7 @@ class ManagePageHandler(webapp2.RequestHandler):
 
     def render(self):
 
-        #appName = app_identity.get_application_id()
+        appName = app_identity.get_application_id()
         current_user = users.get_current_user().email()
         logout_url = users.create_logout_url(utils.raw_logout_url)
         data={}
@@ -26,9 +26,10 @@ class ManagePageHandler(webapp2.RequestHandler):
             rpc = urlfetch.create_rpc()
             request = {}
             request['user_id'] = current_user
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-manage?' + urllib.urlencode(request)
+            #url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-manage?' + urllib.urlencode(request)
 
             #url = 'https://services-dot-' + appName + '.appspot.com?' + urllib.urlencode(request)
+            url = 'https://services-dot-pigeonhole-apt.appspot.com?' + urllib.urlencode(request)
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
             data = json.loads(response.content)
@@ -81,7 +82,7 @@ class ManagePageDeleteHandler(webapp2.RequestHandler):
             form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-deletestream',
+                url='https://services-dot-pigeonhole-apt.appspot.com/service-deletestream',
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)
@@ -111,7 +112,7 @@ class ManagePageUnsubscribeHandler(webapp2.RequestHandler):
             form_data = urllib.urlencode(form_fields)
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-unsubscribestream', #need changing
+                url='https://services-dot-pigeonhole-apt.appspot.com/service-unsubscribestream', #need changing
                 payload=form_data,
                 method=urlfetch.POST,
                 headers=headers)

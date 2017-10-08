@@ -24,7 +24,7 @@ class SearchStreamHandler(webapp2.RequestHandler):
                 request = {}
                 request['user_id'] = current_user
                 request['searchContent'] = searchword
-                url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-search?' + urllib.urlencode(request)
+                url= 'https://services-dot-pigeonhole-apt.appspot.com/service-search?' + urllib.urlencode(request)
 
                 urlfetch.make_fetch_call(rpc, url)
                 response = rpc.get_result()
