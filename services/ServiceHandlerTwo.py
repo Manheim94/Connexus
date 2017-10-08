@@ -151,11 +151,6 @@ class CronServiceHandler(webapp2.RequestHandler):
             msg += url
 
         mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
-                       to='ee382vta@gmail.com',
-                       subject='From Pigeon Group',
-                       body=msg
-                       )
-        mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
                         to = str(email),
                         subject = 'From Pigeon Group',
                         body = msg
