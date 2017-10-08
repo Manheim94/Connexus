@@ -32,7 +32,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''send email'''
         if len(sub_list)!=0:
-            mail.send_mail(sender='yaohua@hallowed-forge-181415.appspotmail.com',
+            mail.send_mail(sender='yaohua@pigeonhole-apt.appspotmail.com',
                            to=sub_list,
                            subject='You have subscribed the stream: ' + name,
                            body=message
@@ -146,16 +146,11 @@ class CronServiceHandler(webapp2.RequestHandler):
         msg=""
         for stream in ops.get_trending_stream():
             msg += " Trending Stream Name: " + stream['Name']
-            url = 'https://hallowed-forge-181415.appspot.com/view_single?stream_id='+stream['Name']
+            url = 'https://pigeonhole-apt.appspot.com/view_single?stream_id='+stream['Name']
             msg +=' Click Here for More: '
             msg += url
-
-        mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
-                       to='ee382vta@gmail.com',
-                       subject='From Pigeon Group',
-                       body=msg
-                       )
-        mail.send_mail(sender='pigeon_apt@hallowed-forge-181415.appspotmail.com',
+            
+        mail.send_mail(sender='pigeon_apt@pigeonhole-apt.appspotmail.com',
                         to = str(email),
                         subject = 'From Pigeon Group',
                         body = msg
