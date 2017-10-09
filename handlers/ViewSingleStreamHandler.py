@@ -67,6 +67,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
         view_single_show_more_handler_url='/view_single_show_more_handler_url'
         view_single_subscribe_handler_url='/view_single_subscribe_handler_url'
+        geo_view_handler_url= '/geo_view_handler_url?'+stream_id
 
         is_all=False
         if(page_range==len(pict_list)):
@@ -83,7 +84,8 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             'is_owned':is_owned,
             'is_subed':is_subed,
             'view_single_subscribe_handler_url':view_single_subscribe_handler_url,
-            'is_all':is_all
+            'is_all':is_all,
+            'geo_view_handler_url':geo_view_handler_url
         }
 
 
