@@ -44,7 +44,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             request['user_id'] = current_user
             request['stream_id'] = stream_id
             request['page_range'] = self.getpagerange()
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewsinglestream?' + urllib.urlencode(request)
+            url= 'https://services-dot-pigeonhole-apt.appspot.com/service-viewsinglestream?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
@@ -62,7 +62,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
         logout_url = users.create_logout_url(utils.raw_logout_url)
         upload_image_handler_url='/upload_image_handler_url'
-        upload_image_servic_url='https://services-dot-hallowed-forge-181415.appspot.com/service-uploadimage'
+        upload_image_servic_url='https://services-dot-pigeonhole-apt.appspot.com/service-uploadimage'
         length=len(pict_list)
 
         view_single_show_more_handler_url='/view_single_show_more_handler_url'
@@ -112,7 +112,7 @@ class ViewSingleSubscribeHandler(webapp2.RequestHandler):
                 request = {}
                 request['user_id'] = current_user
                 request['stream_id'] = stream_id
-                url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-subscribestream?' + urllib.urlencode(request)
+                url= 'https://services-dot-pigeonhole-apt.appspot.com/service-subscribestream?' + urllib.urlencode(request)
                 urlfetch.make_fetch_call(rpc, url)
 
             except Exception:
@@ -128,7 +128,7 @@ class ViewSingleSubscribeHandler(webapp2.RequestHandler):
                 form_data = urllib.urlencode(form_fields)
                 headers = {'Content-Type': 'application/x-www-form-urlencoded'}
                 result = urlfetch.fetch(
-                    url='https://services-dot-hallowed-forge-181415.appspot.com/service-unsubscribestream',
+                    url='https://services-dot-pigeonhole-apt.appspot.com/service-unsubscribestream',
                     payload=form_data,
                     method=urlfetch.POST,
                     headers=headers)
@@ -158,7 +158,7 @@ class UploadImageHandler(webapp2.RequestHandler):
             headers = {}#{'Content-Type': 'multipart/form-data'}
             #headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             result = urlfetch.fetch(
-                url='https://services-dot-hallowed-forge-181415.appspot.com/service-uploadimage',  # need changing
+                url='https://services-dot-pigeonhole-apt.appspot.com/service-uploadimage',  # need changing
                 payload=form_data,
                 method=urlfetch.POST)
                 #,headers=headers)

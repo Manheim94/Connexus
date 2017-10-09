@@ -23,7 +23,7 @@ class ViewAllStreamsHandler(webapp2.RequestHandler):
             request = {}
             request['user_id'] = current_user
             #request['stream_id'] = stream_id
-            url= 'https://services-dot-hallowed-forge-181415.appspot.com/service-viewallstreams?' + urllib.urlencode(request)
+            url= 'https://services-dot-pigeonhole-apt.appspot.com/service-viewallstreams?' + urllib.urlencode(request)
 
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
