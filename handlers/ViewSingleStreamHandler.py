@@ -54,6 +54,8 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
+        self.response.write(data)
+
         is_owned=data['is_owned']
         is_subed=data['is_subed']
 
@@ -67,7 +69,7 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
 
         view_single_show_more_handler_url='/view_single_show_more_handler_url'
         view_single_subscribe_handler_url='/view_single_subscribe_handler_url'
-        geo_view_handler_url= '/geo_view_handler_url?'+stream_id
+        geo_view_handler_url= '/geo_view_handler_url?stream_id='+stream_id
 
         is_all=False
         if(page_range==len(pict_list)):
