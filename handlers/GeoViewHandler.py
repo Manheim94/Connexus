@@ -57,13 +57,13 @@ class GeoViewHandler(webapp2.RequestHandler):
 
         for image in pict_list:
             #createTime = str(image.upload_date)[:10] + 'T' + str(image.upload_date)[11:] + 'Z'
-            createTime='2011-04-11T10:20:30Z'
+            createTime='2017-09-20T'+'10:20:30Z'
             lat = - 57.32652122521709 + 114.65304245043419 * random.random()
             lon = - 123.046875 + 246.09375 * random.random()
 
             # if aYearAgo <= date_object:
             images_info.append({
-                "url": "http://cdn.bleacherreport.net/images/team_logos/328x328/cleveland_cavaliers.png",
+                "url": str(image),
                 "lon": lon,
                 "lat": lat,
                 "createTime": createTime
