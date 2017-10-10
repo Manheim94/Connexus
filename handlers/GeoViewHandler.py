@@ -1,7 +1,6 @@
 
 from datetime import timedelta, datetime
 import random
-
 import webapp2
 from google.appengine.api import users
 from google.appengine.api import images
@@ -39,8 +38,6 @@ class GeoViewHandler(webapp2.RequestHandler):
         images_info = []
         currentTime = datetime.now()
         aYearAgo = currentTime - timedelta(days=365)
-        self.response.write(stream_id)
-        self.response.write(current_user)
         try:
             rpc = urlfetch.create_rpc()
             request = {}
@@ -56,19 +53,17 @@ class GeoViewHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
-        self.response.write(data)
         pict_list=data['pict_list']
 
         for image in pict_list:
-            createTime = str(image.upload_date)[:10] + 'T' + str(image.upload_date)[11:] + 'Z'
-            # date_object = datetime.strptime(createTime, '%Y-%m-%d')
-
+            #createTime = str(image.upload_date)[:10] + 'T' + str(image.upload_date)[11:] + 'Z'
+            createTime='2011-04-11T10:20:30Z'
             lat = - 57.32652122521709 + 114.65304245043419 * random.random()
             lon = - 123.046875 + 246.09375 * random.random()
 
             # if aYearAgo <= date_object:
             images_info.append({
-                "url": image,
+                "url": "http://cdn.bleacherreport.net/images/team_logos/328x328/cleveland_cavaliers.png",
                 "lon": lon,
                 "lat": lat,
                 "createTime": createTime

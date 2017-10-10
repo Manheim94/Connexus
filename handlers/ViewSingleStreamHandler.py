@@ -54,7 +54,6 @@ class ViewSingleStreamHandler(webapp2.RequestHandler):
             self.response.write("Error!<br>")
             self.response.write(Exception)
 
-        self.response.write(data)
 
         is_owned=data['is_owned']
         is_subed=data['is_subed']
