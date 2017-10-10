@@ -9,28 +9,36 @@
     {% block head_title %}
     <title>Connex: Base</title>
     {% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/flat-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 
 </head>
 
-<body >
-
-    <div >
-    <h1><b>Connexus</b></h1>
-
-      <a href="/manage" >Manage </a>
-      <a href="/create" >Create </a>
-      <a href="/view_all" >View </a>
-      <a href="/search" >Search </a>
-      <a href="/view_trending" >Trending </a>
-      <a href="/social" >Social </a>
-      <a href="/feeling_lucky" >I'm Feeling Lucky </a>
-      <a href="{{ logout_url }}" >Log Out</a>
-
-
-    </div>
-
+<body>
+    <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+            <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" href="#">Connexus</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-01">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/manage">Manage</a></li>
+                <li><a href="/create">Create</a></li>
+                <li><a href="/view_all">View</a></li>
+                <li><a href="/search">Search<</a></li>
+                <li><a href="/view_trending">Trending</a></li>
+                <li><a href="/social">Social</a></li>
+                <li><a href="/feeling_lucky">I'm Feeling Lucky</a></li>
+                <li><a href="{{ logout_url }}">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     {% block main_content %}
