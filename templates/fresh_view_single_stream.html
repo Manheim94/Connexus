@@ -4,6 +4,11 @@
 
 <title>Connex: ViewSingle </title>
 
+<script src="/assets/js/dropzone.js"></script>
+<link type="text/css" rel="stylesheet" href="/assets/css/dropzone.css">
+<!--<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>-->
+<!--<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">-->
+
 {% endblock %}
 {% block main_content %}
 <br><br>
@@ -15,7 +20,12 @@
 
 {% if is_owned %}
   <!-- Upload Area-->
-<form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data">
+
+
+<!--<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>-->
+<!--<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">-->
+
+<form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data" class="dropzone" id="my-drop-zone">
     <!-- <input hidden name="stream_id" value="{{stream_id}}"/>-->
     <p>Picture Name</p> <input type="text" name="img_name"/>
     <input type="file" name="img"/> <br>
