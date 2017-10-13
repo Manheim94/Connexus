@@ -6,8 +6,9 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1200, 300);
-  background('white');
+  var canvas = createCanvas(1110, 300);
+  canvas.parent('sketch-holder');
+  background('rgba(220,255,210, 0.0)');
 
   var points = font.textToPoints('Connexus', 100, 200, 192);
 
@@ -19,7 +20,7 @@ function setup() {
 }
 
 function draw() {
-  background('white');
+  background('rgba(240, 237, 242, 1.0)');
   for (var i = 0; i < vehicles.length; i++) {
     var v = vehicles[i];
     v.behaviors();
