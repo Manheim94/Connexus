@@ -7,8 +7,16 @@ from google.appengine.api import app_identity
 
 from config import utils
 import urllib
+
 import json
 import logging
+
+from services import ops
+
+
+import re
+from google.appengine.api import images
+import services.lib.cloudstorage as gcs
 
 
 class ViewSingleStreamHandler(webapp2.RequestHandler):
@@ -142,31 +150,57 @@ class ViewSingleSubscribeHandler(webapp2.RequestHandler):
 
         self.redirect('/view_single?stream_id='+stream_id)
 
-#this is dead
+
 class UploadImageHandler(webapp2.RequestHandler):
     def post(self):
-        current_user = users.get_current_user().email()
-        img=self.request.get('img')
-        img_comment=""
-        img_name=self.request.get('img_name')
-        form_fields = {
-            'img': img,
-            'img_comment':img_comment,
-            'img_name':img_name,
-            'user_id': current_user,
-            'stream_id': ViewSingleStreamHandler.stream_id
-        }
-        try:
-            form_data = urllib.urlencode(form_fields)
-            headers = {}#{'Content-Type': 'multipart/form-data'}
-            #headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-            result = urlfetch.fetch(
-                url='https://services-dot-pigeonhole-apt.appspot.com/service-uploadimage',  # need changing
-                payload=form_data,
-                method=urlfetch.POST)
-                #,headers=headers)
-            #self.response.write(result.content)
-            self.redirect('/view_single')
 
-        except urlfetch.Error:
-            logging.exception('Caught exception fetching url')
+        unicorn = self.request.get('file')
+        img_name = self.request.POST['file'].filename
+        # img_name = "ohshitfuck"  # self.request.get('img_name')
+        stream_id = self.request.get('stream_id')  # self.request.get('stream_id')
+
+        unicorn = images.resize(unicorn, 500, 500)
+        # find the right bucket-stream path
+        b = "/pigeonhole-apt.appspot.com/" + str(stream_id)
+
+        # much be post!
+        img_real_name = self.request.POST['file'].filename
+        pat = "(.+)\.(.+)"
+        img_real_type = re.match(pat, str(img_real_name)).group(2)
+
+        # construct a new content_type
+        content_type_value = "image/" + str(img_real_type).lower()
+
+        # create such file and write to it
+        gcs_file = gcs.open(b + "/" + str(img_name), 'w', content_type=content_type_value)
+        gcs_file.write(unicorn)
+        gcs_file.close()
+
+        unicorn_url = "https://storage.googleapis.com/pigeonhole-apt.appspot.com/" \
+                      + str(stream_id) + "/" + str(img_name)
+
+        """
+        unicorn_url = self.request.get('img_url')
+        img_name = self.request.get('img_name')
+        stream_id = self.request.get('stream_id')
+        """
+
+        # img_comment = "comment"
+        # ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+        # # self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
+
+
+        form_fields = {
+            'img_url': unicorn_url,
+            'img_name': str(re.match(pat, str(img_real_name)).group(1)),
+            'stream_id': stream_id
+        }
+
+        form_data = urllib.urlencode(form_fields)
+        headers = {}  # {'Content-Type': 'multipart/form-data'}
+        # headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        result = urlfetch.fetch(
+            url='https://services-dot-pigeonhole-apt.appspot.com/service-secretupload',  # need changing
+            payload=form_data,
+            method=urlfetch.POST)
+
