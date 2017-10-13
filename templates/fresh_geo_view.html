@@ -7,12 +7,18 @@
 <link rel="stylesheet" href="/assets/css/geoview.css">
 <script src="/assets/js/jsapi"></script>
  <script type="text/javascript" src="/assets/js/markerclusterer.js"></script>
-<script src="/assets/js/jquery-1.10.2.js"></script>
-<script src="/assets/js/jquery-ui.js"></script>
+<!--<script src="/assets/js/jquery-1.10.2.js"></script>-->
+<!--<script src="/assets/js/jquery-ui.js"></script>-->
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <script type="text/javascript" src="/assets/js/slider.js"></script>
 <!-- <script type="text/javascript" src="/assets/js/geoview.js"></script> -->
-<!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOMsWdz_iZ5ZnA-lrSKdbtUNmjMTsrjAI&callback=initMap">
-</script>-->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOMsWdz_iZ5ZnA-lrSKdbtUNmjMTsrjAI&callback=initMap">
+</script>
+<!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOMsWdz_iZ5ZnA-lrSKdbtUNmjMTsrjAI">-->
+<!-- </script> -->
 <!--<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>-->
 
 <script type="text/javascript">
@@ -56,18 +62,18 @@ var oneYearAgo = Back_date(currentTime, -365)
           new google.maps.Size(24, 32));
 		for (var i = 0; i < result.length; i++)
 		{
-		          var latLng = new google.maps.LatLng(result[i].lat,
-		              result[i].lon)
-		              
-		          var marker = new google.maps.Marker({
-		           position: latLng,
-		           draggable: true,
-		           icon: markerImage
-		          });
+              var latLng = new google.maps.LatLng(result[i].lat,
+                  result[i].lon)
 
-		          var contentString = '<div><img src=' + result[i].url + ' width="100" height="100"></div>'
-		          createInfoWindow(marker, contentString);
-		          markers.push(marker);
+              var marker = new google.maps.Marker({
+               position: latLng,
+               draggable: true,
+               icon: markerImage
+              });
+
+              var contentString = '<div><img src=' + result[i].url + ' width="100" height="100"></div>'
+              createInfoWindow(marker, contentString);
+              markers.push(marker);
 		}  
 		var infoWindow = new google.maps.InfoWindow();
 	    function createInfoWindow(marker, contentString) {
@@ -85,7 +91,8 @@ var oneYearAgo = Back_date(currentTime, -365)
         markerClusterer = new MarkerClusterer(map, markers, {
           maxZoom: zoom,
           gridSize: size,
-          styles: styles[style]
+          styles: styles[style],
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         });
       }
       
@@ -183,11 +190,23 @@ var oneYearAgo = Back_date(currentTime, -365)
 }
 
 function initMap() {
-
+        /*
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
           center: {lat: -28.024, lng: 140.887}
         });
+        */
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: new google.maps.LatLng(39.91, 116.38),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+		//var result = {{ image_info|safe }};
+        //refreshMap(result);
+
+		//var result = {{ image_info|safe }};
 
         // Create an array of alphabetical characters used to label the markers.
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -206,7 +225,11 @@ function initMap() {
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+
       }
+
+
       var locations = [
         {lat: -31.563910, lng: 147.154312},
         {lat: -33.718234, lng: 150.363181},

@@ -28,7 +28,7 @@ class GeoViewHandler(webapp2.RequestHandler):
             'image_info': image_info
         }
 
-        template = utils.JINJA_ENVIRONMENT.get_template('fresh_geo_view.html')
+        template = utils.JINJA_ENVIRONMENT.get_template('geo_view.html')
         self.response.write(template.render(template_values))
 
     def getGeoViewImageInfo(self):
