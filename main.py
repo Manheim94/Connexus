@@ -33,7 +33,9 @@ from handlers.ViewSingleStreamHandler import ViewSingleSubscribeHandler
 from handlers.ViewTrendingStreamHandler import ViewTrendingUpdateRateHandler
 from handlers.FeelingLuckyPageHandler import FeelingLuckyPageHandler
 from handlers.SocialPageHandler import SocialPageHandler
+
 from handlers.GeoViewHandler import GeoViewHandler
+
 from handlers.SearchSuggestionHandler import SearchSuggetionHandler
 from config import utils
 from google.appengine.api import users
@@ -81,6 +83,7 @@ app = webapp2.WSGIApplication([
     ('/social', SocialPageHandler),
     ('/geo_view_handler_url',GeoViewHandler),
     ('/search_suggetions', SearchSuggetionHandler)
+
 
 # add something!
 

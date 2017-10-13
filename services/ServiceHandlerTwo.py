@@ -62,6 +62,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
             search.TextField(name='tag', value = tags),
             search.TextField(name='helper_name', value=name_str),
             search.TextField(name='helper_tag', value=tag_str)]
+
         d = search.Document(fields=fields)
         try:
             add_result = index.put(d)  # return array
@@ -200,6 +201,7 @@ class GetSearchSuggestionService(webapp2.RequestHandler):
 
         except search.Error:
             logging.exception('An error occurred on search.')
+
 
         #streamInfo = ops.get_search_stream(streamList)
 
