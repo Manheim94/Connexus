@@ -33,7 +33,10 @@ from handlers.ViewSingleStreamHandler import ViewSingleSubscribeHandler
 from handlers.ViewTrendingStreamHandler import ViewTrendingUpdateRateHandler
 from handlers.FeelingLuckyPageHandler import FeelingLuckyPageHandler
 from handlers.SocialPageHandler import SocialPageHandler
+
 from handlers.GeoViewHandler import GeoViewHandler
+
+from handlers.SearchSuggestionHandler import SearchSuggetionHandler
 from config import utils
 from google.appengine.api import users
 from handlers.CallCron import CallCron
@@ -78,7 +81,10 @@ app = webapp2.WSGIApplication([
     ('/feeling_lucky',FeelingLuckyPageHandler),
     ('/callcron', CallCron),
     ('/social', SocialPageHandler),
-    ('/geo_view_handler_url',GeoViewHandler)
+    ('/geo_view_handler_url',GeoViewHandler),
+    ('/search_suggetions', SearchSuggetionHandler)
+
+
 # add something!
 
 ], debug=True)

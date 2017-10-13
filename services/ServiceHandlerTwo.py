@@ -51,18 +51,32 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
     def AddToIndex(self,name,tags):
         '''index created, exist all way'''
-        index = search.Index(name='streamSearch')
+        index = search.Index(name='newSearch')
+
+        name_str = self.build_suggestions(name)
+        tag_str = self.build_suggestions(tags)
 
         '''add docu into index'''
         fields = [
-            search.AtomField(name='name', value = name),
-            search.TextField(name='tag', value = tags) ]
+            search.TextField(name='name', value = name),
+            search.TextField(name='tag', value = tags),
+            search.TextField(name='helper_name', value=name_str),
+            search.TextField(name='helper_tag', value=tag_str)]
+
         d = search.Document(fields=fields)
         try:
             add_result = index.put(d)  # return array
         except search.Error:
             logging.exception('An error occurred on adding.')
 
+    def build_suggestions(self,str):
+        suggestions = []
+        for word in str.split():
+            prefix = ""
+            for letter in word:
+                prefix += letter
+                suggestions.append(prefix)
+        return ' '.join(suggestions)
 
 
 class SearchServiceHandler(webapp2.RequestHandler):
@@ -71,7 +85,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
-            index = search.Index(name='streamSearch')
+            index = search.Index(name='newSearch')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
             number_found = search_results.number_found
@@ -169,3 +183,30 @@ class SetDestinationService(webapp2.RequestHandler):
             ops.set_cron_destination(12, userid)
         if desti == '1day':
             ops.set_cron_destination(288, userid)
+
+class GetSearchSuggestionService(webapp2.RequestHandler):
+    def get(self):
+
+        searchContent = self.request.get('searchContent')
+        query = searchContent
+        try:
+            index = search.Index(name='newSearch')
+            search_results = index.search(query)  # result list
+            #returned_count = len(search_results.results)
+            number_found = search_results.number_found
+
+            streamList = []
+            for doc in search_results:
+                streamList.append( doc.fields[0].value )
+
+        except search.Error:
+            logging.exception('An error occurred on search.')
+
+        import locale
+        locale.setlocale(locale.LC_ALL, '')
+        streamList = sorted(streamList, cmp=locale.strcoll)
+
+        return_info = {
+            'result': streamList
+        }
+        self.response.write(json.dumps(return_info))

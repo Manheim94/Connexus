@@ -4,12 +4,13 @@
 
 <title>Connex: Search</title>
 
+
 {% endblock %}
 {% block main_content %}
 
   <!-- Search Area-->
 <form action="{{search_send_request_handler_url}}" method="get">
-    <input type="text" name="searchword"/>
+    <input type="text" name="searchword" id="birds"/>
     <input type="submit" value="Search" />
 </form>
 
