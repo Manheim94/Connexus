@@ -55,7 +55,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
         '''add docu into index'''
         fields = [
-            search.AtomField(name='name', value = name),
+            search.TextField(name='name', value = name),
             search.TextField(name='tag', value = tags) ]
         d = search.Document(fields=fields)
         try:
@@ -169,3 +169,27 @@ class SetDestinationService(webapp2.RequestHandler):
             ops.set_cron_destination(12, userid)
         if desti == '1day':
             ops.set_cron_destination(288, userid)
+
+class GetSearchSuggestionService(webapp2.RequestHandler):
+    def get(self):
+
+        searchContent = self.request.get('searchContent')
+        query = searchContent
+        try:
+            index = search.Index(name='streamSearch')
+            search_results = index.search(query)  # result list
+            #returned_count = len(search_results.results)
+            number_found = search_results.number_found
+
+            streamList = []
+            for doc in search_results:
+                streamList.append( doc.fields[0].value )
+
+        except search.Error:
+            logging.exception('An error occurred on search.')
+
+        streamInfo = ops.get_search_stream(streamList)
+        return_info = {
+            'result': streamInfo
+        }
+        self.response.write(json.dumps(return_info))
