@@ -44,7 +44,7 @@ class GeoViewHandler(webapp2.RequestHandler):
             request['user_id'] = current_user
             request['stream_id'] = stream_id
             request['page_range'] = 1
-            url = 'https://services-dot-pigeonhole-apt.appspot.com/service-viewsinglestream?' + urllib.urlencode(request)
+            url = 'https://services-dot-pigeonhole-apt.appspot.com/service-geoview?' + urllib.urlencode(request)
             urlfetch.make_fetch_call(rpc, url)
             response = rpc.get_result()
             data = json.loads(response.content)
@@ -55,15 +55,20 @@ class GeoViewHandler(webapp2.RequestHandler):
 
         pict_list=data['pict_list']
 
+        #self.response.write(pict_list)
+
         for image in pict_list:
             #createTime = str(image.upload_date)[:10] + 'T' + str(image.upload_date)[11:] + 'Z'
-            createTime='2017-09-20T'+'10:20:30Z'
+
+            createTime=str(image['img_date'])+'T'+'00:00:00Z'
+            #self.response.write(createTime)
+
             lat = - 57.32652122521709 + 114.65304245043419 * random.random()
             lon = - 123.046875 + 246.09375 * random.random()
 
             # if aYearAgo <= date_object:
             images_info.append({
-                "url": str(image),
+                "url": str(image['img_url']),
                 "lon": lon,
                 "lat": lat,
                 "createTime": createTime
