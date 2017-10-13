@@ -207,6 +207,6 @@ service = webapp2.WSGIApplication([
     ('/service-lucky', IFeelLuckyServiceHandler),
     ('/service-setrate', ServiceHandlerTwo.SetDestinationService),
     ('/service-secretupload', SecreteUploadImageServiceHandler),
-    ('/service-geoview', GeoViewServiceHandler)
+    ('/service-geoview', GeoViewServiceHandler),
     ('/service-searchSuggestions', ServiceHandlerTwo.GetSearchSuggestionService)
 ], debug=True)
