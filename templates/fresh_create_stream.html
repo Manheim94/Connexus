@@ -2,31 +2,57 @@
 
 {% block head_title %}
 
-<title>Connex: Create</title>
+<title>Connexus: Create</title>
 
 {% endblock %}
 {% block main_content %}
 <form action="{{create_stream_url}}" method="post">
 
-    <h4>Name your Stream</h4>
-      <!-- Stream name-->
-    <input type="text" name="stream_name"/> <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Create a new Stream</h4>
+        </div>
+    </div>
 
-      <!-- Subscribers-->
-    <h4>Add Subscribers</h4>
-    <textarea name="subscribers" rows="5" placeholder="abc@def.com"></textarea>
+    <div class="row">
+        <div class="col-xs-3">
+            <h6>Name your Stream</h6> <!-- Stream name-->
+            <input type="text" name="stream_name" class="form-control"/>
+        </div>
+        <div class="col-xs-9">
+            <h6>URL to cover image</h6> <!-- URLs -->
+            <input type="text" name="cover_url" class="form-control"/>
+        </div>
+    </div>
 
-    <textarea name="message" rows="5" placeholder="Message for invite"></textarea>
+    <div class="row">
+        <div class="col-xs-12">
+            <h6>Tag Your Streams</h6> <!-- Tags -->
+            <input name="tags" placeholder="#tags" class="form-control"/>
+        </div>
+    </div>
 
-      <!-- Tags -->
-    <h4>Tag Your Streams</h4>
-    <textarea name="tags" rows="5" placeholder="#tags"></textarea> <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <h6>Add Subscribers</h6> <!-- Subscribers-->
+        </div>
+    </div>
 
-      <!-- URLs -->
-    <h4>URL to cover image</h4>
-    <input type="text" name="cover_url"/> <br>
+    <div class="row">
+        <div class="col-xs-3">
+            <input name="subscribers" placeholder="abc@def.com" class="form-control">
+        </div>
+        <div class="col-xs-9">
+            <input name="message" placeholder="Message for invite" class="form-control">
+        </div>
+    </div>
 
-    <input type="submit" value="Create Stream"/>
+    <div class="row">
+        <div class="col-xs-12">
+            <br>
+            <input type="submit" value="Create Stream" class="btn btn-primary"/>
+        </div>
+    </div>
 
 </form>
 

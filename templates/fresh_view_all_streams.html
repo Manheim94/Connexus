@@ -2,17 +2,27 @@
 
 {% block head_title %}
 
-<title>Connex: ViewAll</title>
+<title>Connexus: ViewAll</title>
 
 {% endblock %}
 {% block main_content %}
-<h3>View All Streams</h3>
+<div class="row">
+    <div class="col-xs-12">
+        <h4>View All Streams</h4>
+    </div>
+</div>
   <!-- A List of Cover Pictures-->
 {% for s in stream_list_with_url %}
 
-<div style="display:inline">
-    <label>{{s[2]}}</label>
-    <a href="{{s[1]}}" ><img src="{{s[0]}}" width="300" height="200"/></a>
+<div class="col-xs-3">
+    <div class="thumbnail">
+        <div style="height: 300px;">
+            <a href="{{s[1]}}">
+                <img src="{{s[0]}}" style="height: 260px; align-items: center" class="img-rounded"/>
+                <p class="img-comment">{{s[2]}}</p>
+            </a>
+        </div>
+    </div>
 </div>
 
 {% endfor %}

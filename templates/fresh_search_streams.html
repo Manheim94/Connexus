@@ -2,22 +2,44 @@
 
 {% block head_title %}
 
-<title>Connex: Search</title>
+<title>Connexus: Search</title>
 
 
 {% endblock %}
 {% block main_content %}
 
-  <!-- Search Area-->
-<form action="{{search_send_request_handler_url}}" method="get">
-    <input type="text" name="searchword" id="birds"/>
-    <input type="submit" value="Search" />
-</form>
 
+<div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6">
+      <!-- Search Area-->
+        <form action="{{search_send_request_handler_url}}" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="searchword" id="birds">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn"><span class="fui-search"></span></button>
+                    </span>
+                </div>
+        </form>
+    </div>
+    <div class="col-xs-3"></div>
+</div>
 
 {% for s in stream_list %}
-<p>{{s['Name']}}</p>
-<img src="{{s['CoverPage']}}" width="300" height="200"/>
+<br>
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <div class="thumbnail">
+            <div style="height: 320px;">
+                <img src="{{s['CoverPage']}}" style="height: 260px; align-items: center" class="img-rounded"/>
+                <p class="img-comment">{{s['Name']}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4"></div>
+</div>
+
 
 {% endfor %}
 
