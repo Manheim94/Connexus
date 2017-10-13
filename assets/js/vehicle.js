@@ -31,7 +31,7 @@ Vehicle.prototype.update = function() {
 }
 
 Vehicle.prototype.show = function() {
-  stroke(random(255), random(255), random(255));
+  stroke('rgba(47, 65, 84, 1)');
   strokeWeight(8);
   point(this.pos.x, this.pos.y);
 }

@@ -15,6 +15,7 @@ import random
 import urllib
 
 
+
 #from google.storage import speckle
 #import cloudstorage as gcs
 
@@ -192,6 +193,18 @@ class GeoViewServiceHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(return_info))
 
 
+class ChromeServiceHandler(webapp2.RequestHandler):
+    def post(self):
+        unicorn_url = self.request.get('img_url')
+
+        pat = "(.+)\.(.+)"
+        img_name = re.match(pat, str(unicorn_url)).group(1)
+
+        stream_id = "PigeonFamily"
+        img_comment = "comment"
+        ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+
+
 service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
@@ -207,5 +220,6 @@ service = webapp2.WSGIApplication([
     ('/service-lucky', IFeelLuckyServiceHandler),
     ('/service-setrate', ServiceHandlerTwo.SetDestinationService),
     ('/service-secretupload', SecreteUploadImageServiceHandler),
-    ('/service-geoview', GeoViewServiceHandler)
+    ('/service-geoview', GeoViewServiceHandler),
+    ('/service-chrome', ChromeServiceHandler)
 ], debug=True)

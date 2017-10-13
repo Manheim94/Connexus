@@ -7,6 +7,7 @@ from google.appengine.api import users
 import storage_ops
 from google.appengine.api import search
 import logging
+import random
 
 
 class CreateStreamServiceHandler(webapp2.RequestHandler):
@@ -15,6 +16,12 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         user_id = self.request.get('user_id')  # from Zhangyi 'current_user' exactly
         name = self.request.get('name')  # from page
         cover_url = self.request.get('cover_url')  # from page    can be empty!
+
+        if cover_url == "":
+            num = int(random.random() * 5)
+            cover_url = "https://storage.googleapis.com/pigeonhole-apt.appspot.com/" \
+                        "defaultcoverimagefolderyaohuazhao/" + str(num) + ".jpg"
+
         subscribers = self.request.get('subscribers')  # from page
         message = self.request.get('message')  # from page
         tags = self.request.get('tags')  # from page
