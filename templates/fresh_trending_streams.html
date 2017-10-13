@@ -9,20 +9,31 @@
 
   <!-- A List of Cover Pictures-->
 {% for s in stream_list %}
-<p>{{s['Name']}}</p>
-<a href="{{s['url']}}"><img src="{{s['CoverPage']}}" width="300" height="200"/></a>
-<p>{{s['NumberOfViews']}} views</p>
+
+<div class="col-xs-3">
+    <div class="thumbnail">
+        <div style="height: 300px;">
+            <a href="{{s['url']}}">
+                <img src="{{s['CoverPage']}}" style="height: 260px; align-items: center" class="img-rounded"/>
+                <p class="img-comment">{{s['Name']}}: {{s['NumberOfViews']}} views</p>
+            </a>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
 
-<br><br>
-<h4>Email Trending Report</h4>
+
+<div class="col-xs-3">
+<h5>Email Trending Report</h5>
 <form action="{{view_trending_update_rate_handler_url}}" method="get">
-    <input type="radio" name="rate" value="no" {% if rate=="no" %} checked="checked" {% endif %}>No reports<br>
-    <input type="radio" name="rate" value="5min" {% if rate=="5min" %} checked="checked" {% endif %}>Every 5 minutes<br>
-    <input type="radio" name="rate" value="1hour" {% if rate=="1hour" %} checked="checked" {% endif %} >Every 1 hour<br>
-    <input type="radio" name="rate" value="1day" {% if rate=="1day" %} checked="checked" {% endif %} >Every day<br>
-    <input type="submit" value="update_rate"/>
+    <input type="radio" name="rate" value="no" {% if rate=="no" %} checked="checked" {% endif %}>  No reports<br>
+    <input type="radio" name="rate" value="5min" {% if rate=="5min" %} checked="checked" {% endif %}>  Every 5 minutes<br>
+    <input type="radio" name="rate" value="1hour" {% if rate=="1hour" %} checked="checked" {% endif %}>  Every 1 hour<br>
+    <input type="radio" name="rate" value="1day" {% if rate=="1day" %} checked="checked" {% endif %}>  Every day<br>
+    <br>
+    <input type="submit" value="update_rate" class="btn btn-primary btn-block"/>
 </form>
+</div>
 
 {% endblock %}
