@@ -12,6 +12,7 @@ import lib.cloudstorage as gcs
 import re
 
 import random
+import urllib
 
 
 #from google.storage import speckle
@@ -75,13 +76,24 @@ class ViewSingleStreamServiceHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(return_info))
 
 
+class SecreteUploadImageServiceHandler(webapp2.RequestHandler):
+    def post(self):
+        # Secrete handler for web image to upload, shush!
+        # only get the img_url
+        unicorn_url = self.request.get('img_url')
+        img_name = self.request.get('img_name')
+        stream_id = self.request.get('stream_id')
+        img_comment = "comment"
+        ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+        #self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
+
+
 class UploadImageServiceHandler(webapp2.RequestHandler):
     def post(self):
-
         unicorn = self.request.get('img')
         img_name = self.request.get('img_name')
         stream_id = self.request.get('stream_id')
-        img_comment = self.request.get('img_comment')
+        img_comment = "comment"
 
         unicorn = images.resize(unicorn, 500, 500)
         # find the right bucket-stream path
@@ -180,5 +192,6 @@ service = webapp2.WSGIApplication([
     ('/service-treanding', ServiceHandlerTwo.TrendingServiceHandler),
     ('/service-cron', ServiceHandlerTwo.CronServiceHandler),
     ('/service-lucky', IFeelLuckyServiceHandler),
-    ('/service-setrate', ServiceHandlerTwo.SetDestinationService)
+    ('/service-setrate', ServiceHandlerTwo.SetDestinationService),
+    ('/service-secretupload', SecreteUploadImageServiceHandler)
 ], debug=True)

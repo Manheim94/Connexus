@@ -4,8 +4,12 @@
 
 <title>Connex: ViewSingle </title>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script src="/assets/js/dropzone.js"></script>
+
 <link type="text/css" rel="stylesheet" href="/assets/css/dropzone.css">
+
 <!--<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>-->
 <!--<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">-->
 
@@ -25,14 +29,44 @@
 <!--<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>-->
 <!--<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">-->
 
-<form action="{{upload_image_handler_url}}" method="post" enctype="multipart/form-data" class="dropzone" id="my-drop-zone">
-    <!-- <input hidden name="stream_id" value="{{stream_id}}"/>-->
-    <p>Picture Name</p> <input type="text" name="img_name"/>
-    <input type="file" name="img"/> <br>
-    <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
-    <input type="submit" value="upload"/>
+<!--<form action="/upload_image_handler_url" method="post" enctype="multipart/form-data" class="dropzone" id="my-drop-zone" name="file">-->
 
-</form>
+    <!--&lt;!&ndash;<div class="fallback">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="file" name="img"/> <br>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<div class="fallback">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input name="img" type="file" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&ndash;&gt;-->
+    <!--&lt;!&ndash;<input hidden name="stream_id" value="{{stream_id}}"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>Picture Name</p> <input type="text" name="img_name"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="file" name="img"/> <br>&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="submit" value="upload"/>&ndash;&gt;-->
+
+<!--</form>-->
+
+<script src='/assets/js/upload_control.js'></script>
+<div class="container">
+    <!-- The method must be "POST" and enctype must be set to "multipart/form-data" -->
+    <div>
+        <form action="/upload_image_handler_url" class="dropzone" id="mydropzone" method="post" enctype="multipart/form-data">
+            <input hidden name="stream_id" value="{{stream_id}}"/>
+        </form>
+
+        <form>
+            <button type="button" onclass="btn btn-success" onclick="window.location.href='https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}'">Confirm</button>
+        </form>
+
+        <!--<a href="https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}">Confirm</a>-->
+        <!--<form action="https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}">-->
+            <!--<input type="submit" value="Confirm" />-->
+        <!--</form>-->
+    </div>
+</div>
 {% endif %}
 
 <form action="{{view_single_show_more_handler_url}}" method ="get">
