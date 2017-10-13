@@ -179,6 +179,19 @@ class IFeelLuckyServiceHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(return_info))
 
 
+class GeoViewServiceHandler(webapp2.RequestHandler):
+    def get(self):
+        stream_id = self.request.get('stream_id')
+
+        # get all picts information in stream
+        all_pict_list = ops.get_geoview_stream(stream_id)
+
+        return_info = {
+            'pict_list': all_pict_list,
+        }
+        self.response.write(json.dumps(return_info))
+
+
 service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
@@ -193,5 +206,6 @@ service = webapp2.WSGIApplication([
     ('/service-cron', ServiceHandlerTwo.CronServiceHandler),
     ('/service-lucky', IFeelLuckyServiceHandler),
     ('/service-setrate', ServiceHandlerTwo.SetDestinationService),
-    ('/service-secretupload', SecreteUploadImageServiceHandler)
+    ('/service-secretupload', SecreteUploadImageServiceHandler),
+    ('/service-geoview', GeoViewServiceHandler)
 ], debug=True)

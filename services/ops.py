@@ -264,3 +264,25 @@ def set_cron_destination(des, pigeon_id):
         cron_list[0].destination = des
         cron_list[0].put()
     return
+
+
+def get_geoview_stream(name):
+    stream_list = Stream.query(Stream.name == name).fetch()
+    if not stream_list:
+        return []
+    stream = stream_list[0]
+    # return images
+    img_list = Image.query(ancestor=stream.key).order(Image.upload_date).fetch()
+
+    # make a list
+    img_info = []
+    for img in img_list:
+        # make a new dict
+        single_img_dict = {}
+        # store img_url
+        single_img_dict['img_url'] = img.url
+        # store img_date
+        single_img_dict['img_date'] = str(img.upload_date)
+        # append this dict to "return" list
+        img_info.append(single_img_dict)
+    return img_info
