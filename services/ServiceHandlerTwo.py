@@ -51,7 +51,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
     def AddToIndex(self,name,tags):
         '''index created, exist all way'''
-        index = search.Index(name='streamSearch')
+        index = search.Index(name='newSearch')
 
         name_str = self.build_suggestions(name)
         tag_str = self.build_suggestions(tags)
@@ -85,7 +85,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
-            index = search.Index(name='streamSearch')
+            index = search.Index(name='newSearch')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
             number_found = search_results.number_found
@@ -190,7 +190,7 @@ class GetSearchSuggestionService(webapp2.RequestHandler):
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
-            index = search.Index(name='streamSearch')
+            index = search.Index(name='newSearch')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
             number_found = search_results.number_found
@@ -202,13 +202,10 @@ class GetSearchSuggestionService(webapp2.RequestHandler):
         except search.Error:
             logging.exception('An error occurred on search.')
 
+        import locale
+        locale.setlocale(locale.LC_ALL, '')
+        streamList = sorted(streamList, cmp=locale.strcoll)
 
-        #streamInfo = ops.get_search_stream(streamList)
-
-        # return_info = {
-        #     'result': streamInfo
-        # }
-       # streamList.sort(key=str.lower)
         return_info = {
             'result': streamList
         }
