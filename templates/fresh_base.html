@@ -16,6 +16,35 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+
+    var cache = {'pg':['Menghao Yang','Yaohua Zhao','Yi Zhang','Qin Shou']};
+
+    $( "#birds" ).autocomplete({
+      minLength: 1,
+
+      source: function( request, response ) {
+        var term = request.term;
+        if ( term in cache ) {
+          response( cache[ term ] );
+          return;
+        }
+        $.getJSON( "/search_suggetions", {'searchContent': term }, function( data, status, xhr ) {
+          cache[ term ] = data['result'];
+          response( data['result'] );
+        });
+
+      }
+
+    });
+
+  } );
+</script>
+
 </head>
 
 <body>

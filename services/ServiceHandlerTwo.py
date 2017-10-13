@@ -53,16 +53,29 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         '''index created, exist all way'''
         index = search.Index(name='streamSearch')
 
+        name_str = self.build_suggestions(name)
+        tag_str = self.build_suggestions(tags)
+
         '''add docu into index'''
         fields = [
             search.TextField(name='name', value = name),
-            search.TextField(name='tag', value = tags) ]
+            search.TextField(name='tag', value = tags),
+            search.TextField(name='helper_name', value=name_str),
+            search.TextField(name='helper_tag', value=tag_str)]
         d = search.Document(fields=fields)
         try:
             add_result = index.put(d)  # return array
         except search.Error:
             logging.exception('An error occurred on adding.')
 
+    def build_suggestions(self,str):
+        suggestions = []
+        for word in str.split():
+            prefix = ""
+            for letter in word:
+                prefix += letter
+                suggestions.append(prefix)
+        return ' '.join(suggestions)
 
 
 class SearchServiceHandler(webapp2.RequestHandler):
@@ -188,8 +201,13 @@ class GetSearchSuggestionService(webapp2.RequestHandler):
         except search.Error:
             logging.exception('An error occurred on search.')
 
-        streamInfo = ops.get_search_stream(streamList)
+        #streamInfo = ops.get_search_stream(streamList)
+
+        # return_info = {
+        #     'result': streamInfo
+        # }
+       # streamList.sort(key=str.lower)
         return_info = {
-            'result': streamInfo
+            'result': streamList
         }
         self.response.write(json.dumps(return_info))
