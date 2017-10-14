@@ -60,15 +60,13 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         '''index created, exist all way'''
         index = search.Index(name='newSearchTwo')
 
-        name_str = self.build_suggestions(name)
-        tag_str = self.build_suggestions(tags)
+        name_str = self.getSubStrings(name)
 
         '''add docu into index'''
         fields = [
             search.TextField(name='name', value = name),
             search.TextField(name='tag', value = tags),
-            search.TextField(name='helper_name', value=name_str),
-            search.TextField(name='helper_tag', value=tag_str)]
+            search.TextField(name='helper_name', value=name_str)]
 
         d = search.Document(fields=fields)
         try:
@@ -76,14 +74,11 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
         except search.Error:
             logging.exception('An error occurred on adding.')
 
-    def build_suggestions(self,str):
-        suggestions = []
-        for word in str.split():
-            prefix = ""
-            for letter in word:
-                prefix += letter
-                suggestions.append(prefix)
-        return ' '.join(suggestions)
+    def getSubStrings(self,str):
+        string_list = []
+        length = len(str)
+        string_list.extend([str[i:j + 1] for i in xrange(length) for j in xrange(i, length)])
+        return " ".join(string_list)
 
 
 class SearchServiceHandler(webapp2.RequestHandler):
