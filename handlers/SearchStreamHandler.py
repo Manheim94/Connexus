@@ -39,12 +39,21 @@ class SearchStreamHandler(webapp2.RequestHandler):
             stream_list=""
 
         logout_url = users.create_logout_url(utils.raw_logout_url)
-        search_send_request_handler_url= "/search" #"/search_send_request_handler_url"
+        search_send_request_handler_url= "/search"
+
+        list_with_url = []
+        for stream in stream_list:
+            stream_with_url = []
+            stream_with_url.append(stream['CoverPage'])  # s0
+            view_stream_url = "/view_single?stream_id=" + stream['Name']
+            stream_with_url.append(view_stream_url)  # s1
+            stream_with_url.append(stream['Name'])  # s2
+            list_with_url.append(stream_with_url)
 
         template_values = {
             'logout_url': logout_url,
             'current_user': current_user,
-            'stream_list':stream_list,
+            'stream_list':list_with_url,
             'searchword': searchword,
             'search_send_request_handler_url':search_send_request_handler_url
         }
@@ -52,7 +61,3 @@ class SearchStreamHandler(webapp2.RequestHandler):
 
         template = utils.JINJA_ENVIRONMENT.get_template('fresh_search_streams.html')
         self.response.write(template.render(template_values))
-
-class SearchSendRequestHandler(webapp2.RequestHandler):
-    def get(self):
-        pass
