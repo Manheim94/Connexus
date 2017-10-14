@@ -44,10 +44,12 @@ function markerCoords(markerobject){
 var url= "<a href=\'http://pigeonhole-apt.appspot.com/view_single?stream_id=PigeonFamily \' >Click Here</a> to view the full stream"
 
 $( "#upload-form" ).submit(function( event ) {
+    event.preventDefault();
+    this.submit();
     document.getElementById("urlinput").value="";
     document.getElementById("response").innerHTML="You have successfully upload your image. "+ url;
-    
 });
+
 
 $(document).ready(function(){
    $('body').on('click', 'a', function(){
@@ -55,3 +57,5 @@ $(document).ready(function(){
      return false;
    });
 });
+
+
