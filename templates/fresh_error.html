@@ -1,13 +1,40 @@
-{% extends "fresh_base.html" %}
 
 {% block head_title %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>Connexus | Error</title>
+    <link href="https://fonts.googleapis.com/css?family=Vidaloka" rel="stylesheet">
+    <script src="https://use.fontawesome.com/572d8b6fbe.js"></script>
+    <style>
+        h4 {
+            font-family: 'Vidaloka', serif;
+            font-size: xx-large;
+        }
+        p {
+            font-family: 'Vidaloka', serif;
+        }
+    </style>
 
-<title>Connex: Error</title>
-
+</head>
 {% endblock %}
 {% block main_content %}
 
-<h3> ERROR: Sorry, the stream name has existed. Please change to a new name.</h3>
-<a href="{{create_url}}">Go Back</a>
+<body>
+    <div class="container" style="padding-top: 100px">
+        <div class="alert alert-danger" role="alert">
+            <h4 style="text-align: center"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Oops...</strong>the life is long, the thought is strong, the stream name has existed.</h4>
+            <p style="text-align: center">Please change a new name and hopefully try one last time!</p>
+        </div>
+        <div class="container" style="text-align: center">
+            <img src="https://storage.googleapis.com/pigeonhole-apt.appspot.com/LXkRmNDHW3-12.png" class="img-rounded">
+        </div>
+        <br>
+    </div>
+    <br>
+    <div class="container" style="text-align: center">
+        <a href="{{create_url}}" class="btn btn-outline-danger btn-lg">Go Back</a>
+    </div>
+</body>
 
 {% endblock %}
