@@ -58,7 +58,7 @@ class CreateStreamServiceHandler(webapp2.RequestHandler):
 
     def AddToIndex(self,name,tags):
         '''index created, exist all way'''
-        index = search.Index(name='newSearch')
+        index = search.Index(name='newSearchTwo')
 
         name_str = self.build_suggestions(name)
         tag_str = self.build_suggestions(tags)
@@ -92,7 +92,7 @@ class SearchServiceHandler(webapp2.RequestHandler):
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
-            index = search.Index(name='newSearch')
+            index = search.Index(name='newSearchTwo')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
             number_found = search_results.number_found
@@ -197,7 +197,7 @@ class GetSearchSuggestionService(webapp2.RequestHandler):
         searchContent = self.request.get('searchContent')
         query = searchContent
         try:
-            index = search.Index(name='newSearch')
+            index = search.Index(name='newSearchTwo')
             search_results = index.search(query)  # result list
             #returned_count = len(search_results.results)
             number_found = search_results.number_found
