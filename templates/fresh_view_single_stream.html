@@ -15,18 +15,41 @@
 
 {% endblock %}
 {% block main_content %}
-<br><br>
-<h2>Stream Name: {{stream_id}}</h2>
+
+<div class="row">
+    <div class="col-xs-11">
+        <h4>Stream Name: <span style="font-size: 45px">{{stream_id}}</span></h4>
+    </div>
+    <a href="{{geo_view_handler_url}}">
+        <div class="col-xs-1">
+            <img style="height: 70%; width: 70%" src="assets/dist/img/icons/svg/compas.svg" alt="Compas" class="tile-image big-illustration">
+        </div>
+    </a>
+
   <!-- A List of Pictures-->
-{% for s in pict_list[:page_range] %}
-<div class="col-xs-3">
-    <div class="thumbnail">
-        <div style="height: 300px;">
-            <img src="{{s}}" style="height: 260px; align-items: center" class="img-rounded"/>
+    {% for s in pict_list[:page_range] %}
+    <div class="col-xs-3">
+        <div class="thumbnail">
+            <div style="height: 300px;">
+                <a>
+                <img src="{{s}}" style="height: 280px; align-items: center" class="img-rounded"/>
+                </a>
+            </div>
         </div>
     </div>
+    {% endfor %}
+
 </div>
-{% endfor %}
+
+<form action="{{view_single_show_more_handler_url}}" method ="get">
+    <input type="hidden" name="stream_id" value="{{stream_id}}"/>
+    <input type="hidden" name="page_range"  value="{{page_range}}" />
+
+    {% if not is_all %}
+    <input type="submit" value="Show More" class="btn-primary"/>
+    {% endif %}
+
+</form>
 
 {% if is_owned %}
   <!-- Upload Area-->
@@ -56,17 +79,16 @@
 <!--</form>-->
 
 <script src='/assets/js/upload_control.js'></script>
-<div class="container">
+<div class="row">
     <!-- The method must be "POST" and enctype must be set to "multipart/form-data" -->
-    <div>
+    <div class="col-xs-12">
         <form action="/upload_image_handler_url" class="dropzone" id="mydropzone" method="post" enctype="multipart/form-data">
             <input hidden name="stream_id" value="{{stream_id}}"/>
         </form>
 
         <form>
-            <button type="button" onclass="btn btn-success" onclick="window.location.href='https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}'">Confirm</button>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}'">Confirm</button>
         </form>
-
         <!--<a href="https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}">Confirm</a>-->
         <!--<form action="https://pigeonhole-apt.appspot.com/view_single?stream_id={{stream_id}}">-->
             <!--<input type="submit" value="Confirm" />-->
@@ -75,22 +97,12 @@
 </div>
 {% endif %}
 
-<form action="{{view_single_show_more_handler_url}}" method ="get">
-    <input type="hidden" name="stream_id" value="{{stream_id}}"/>
-    <input type="hidden" name="page_range"  value="{{page_range}}" />
-
-    {% if not is_all %}
-    <input type="submit" value="Show More" />
-    {% endif %}
-
-</form>
-
   <!-- Subscribe this-->
 {% if not is_subed %}
 <form action="{{view_single_subscribe_handler_url}}" method="get" >
     <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
     <input type="hidden" name="is_subed" value="{{is_subed}}" />
-    <input type="submit" value="subscribe"/>
+    <input type="submit" value="subscribe" class="btn btn-primary"/>
 </form>
 
 {% endif %}
@@ -100,12 +112,9 @@
 <form action="{{view_single_subscribe_handler_url}}" method="get" >
     <input type="hidden" name="stream_id" value="{{stream_id}}"/> <br>
     <input type="hidden" name="is_subed" value="{{is_subed}}" />
-    <input type="submit" value="unsubscribe"/>
+    <input type="submit" value="unsubscribe" class="btn btn-warning"/>
 </form>
 
 {% endif %}
-
-
 <a href="{{geo_view_handler_url}}">Geo View</a>
-
 {% endblock %}
