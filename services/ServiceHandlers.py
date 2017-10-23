@@ -85,7 +85,9 @@ class SecreteUploadImageServiceHandler(webapp2.RequestHandler):
         img_name = self.request.get('img_name')
         stream_id = self.request.get('stream_id')
         img_comment = "comment"
-        ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+        lon = float(self.request.get('lon'))
+        lat = float(self.request.get('lat'))
+        ops.create_image(img_comment, img_name, unicorn_url, stream_id, lon, lat)
         #self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
 
 
@@ -94,6 +96,9 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
         unicorn = self.request.get('img')
         img_name = self.request.get('img_name')
         stream_id = self.request.get('stream_id')
+
+        lon = float(self.request.get('lon'))
+        lat = float(self.request.get('lat'))
         img_comment = "comment"
 
         unicorn = images.resize(unicorn, 500, 500)
@@ -118,7 +123,7 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
         unicorn_url = "https://storage.googleapis.com/pigeonhole-apt.appspot.com/" \
                       + str(stream_id) + "/" + str(img_name) + "." + str(img_real_type).lower()
         # back to ndb server
-        ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+        ops.create_image(img_comment, img_name, unicorn_url, stream_id, lon, lat)
 
         # redirect the user to the view single page
         self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
@@ -202,7 +207,9 @@ class ChromeServiceHandler(webapp2.RequestHandler):
 
         stream_id = "PigeonFamily"
         img_comment = "comment"
-        ops.create_image(img_comment, img_name, unicorn_url, stream_id)
+        lon = 0.0
+        lat = 0.0
+        ops.create_image(img_comment, img_name, unicorn_url, stream_id, lon, lat)
 
 
 service = webapp2.WSGIApplication([

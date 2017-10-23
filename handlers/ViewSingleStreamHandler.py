@@ -1,4 +1,4 @@
-
+import random
 
 import webapp2
 from google.appengine.api import users
@@ -188,12 +188,15 @@ class UploadImageHandler(webapp2.RequestHandler):
         # img_comment = "comment"
         # ops.create_image(img_comment, img_name, unicorn_url, stream_id)
         # # self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
-
+        lat = - 57.32652122521709 + 114.65304245043419 * random.random()
+        lon = - 123.046875 + 246.09375 * random.random()
 
         form_fields = {
             'img_url': unicorn_url,
             'img_name': str(re.match(pat, str(img_real_name)).group(1)),
-            'stream_id': stream_id
+            'stream_id': stream_id,
+            'lon': lon,
+            'lat': lat
         }
 
         form_data = urllib.urlencode(form_fields)

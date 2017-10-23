@@ -63,12 +63,16 @@ class GeoViewHandler(webapp2.RequestHandler):
             createTime=str(image['img_date'])+'T'+'00:00:00Z'
             #self.response.write(createTime)
 
-            lat = - 57.32652122521709 + 114.65304245043419 * random.random()
-            lon = - 123.046875 + 246.09375 * random.random()
+            lon = float(str(image['img_lon']))
+            lat = float(str(image['img_lat']))
+            if (lon == 0) and (lat == 0):
+                lat = - 57.32652122521709 + 114.65304245043419 * random.random()
+                lon = - 123.046875 + 246.09375 * random.random()
 
+            url = str(image['img_url']).replace(" ", "%20")
             # if aYearAgo <= date_object:
             images_info.append({
-                "url": str(image['img_url']),
+                "url": url,
                 "lon": lon,
                 "lat": lat,
                 "createTime": createTime
