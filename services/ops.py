@@ -78,6 +78,7 @@ def _get_stream_dict(stream):
         stream_dict['LastPictDate'] = str(stream.create_date)   # Yaohua Mod
         stream_dict['NumberOfPict'] = 0
     stream_dict['Views'] = stream.num_of_views
+    stream_dict['CoverPage'] = stream.cover_url
     return stream_dict
 
 
@@ -153,7 +154,8 @@ def get_trending_stream():
                           "NumberOfViews": s.num_of_views},
                stream_list[::-1][:3])
 
-def create_image(comment, name, url, stream_name):
+
+def create_image(comment, name, url, stream_name, lon, lat):
     stream_list = Stream.query(Stream.name == stream_name).fetch()
     if stream_list:
         stream = stream_list[0]
@@ -163,6 +165,8 @@ def create_image(comment, name, url, stream_name):
         img.name = name
         img.url = url
         img.comments = comment
+        img.gps_lon = lon
+        img.gps_lat = lat
         img.put()
     return
 
@@ -283,6 +287,27 @@ def get_geoview_stream(name):
         single_img_dict['img_url'] = img.url
         # store img_date
         single_img_dict['img_date'] = str(img.upload_date)
+        if not img.gps_lon:
+            img.gps_lon = 0.0
+        if not img.gps_lat:
+            img.gps_lat = 0.0
+        # store gps data - lon
+        single_img_dict['img_lon'] = img.gps_lon
+        # store gps data - lat
+        single_img_dict['img_lat'] = img.gps_lat
         # append this dict to "return" list
         img_info.append(single_img_dict)
+    return img_info
+
+def get_gps_list():
+    img_list = Stream.query().fetch()
+    img_info = []
+    for img in img_list:
+        single_img_dict = {}
+        single_img_dict['img_url'] = img.url
+        single_img_dict['img_lat'] = img.gps_lat
+        single_img_dict['img_lon'] = img.gps_lon
+        # single_img_dict['img_stream'] = img.key.parent('Stream').get().name
+        img_info.append(single_img_dict)
+        # single_img_dict['img_stream'] = img.Key.parent(Stream)
     return img_info

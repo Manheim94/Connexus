@@ -5,6 +5,8 @@ class Image(ndb.Model):
     comments = ndb.StringProperty()
     name = ndb.StringProperty()
     url = ndb.StringProperty()
+    gps_lon = ndb.FloatProperty()
+    gps_lat = ndb.FloatProperty()
     upload_date = ndb.DateProperty(auto_now_add=True)
 
 
