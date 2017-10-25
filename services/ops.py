@@ -48,7 +48,8 @@ def get_sub_stream(pigeon_id):
     for sub in sub_list:
         if sub.Stream_key.get():
             stream_list.append(sub.Stream_key.get())
-    return map(_get_stream_dict, stream_list)
+    return sorted(map(_get_stream_dict, stream_list),
+                  key=lambda d: d['LastPictDate'])[::-1]
 
 
 def pigeon_exists(pigeon_id):
@@ -86,6 +87,12 @@ def get_all_stream():
     stream_list = Stream.query().order(Stream.create_date).fetch()
     return map(lambda s: {"Name": s.name, "CoverPage": s.cover_url},
                stream_list)
+
+
+def get_all_stream_Android():
+    stream_list = Stream.query().fetch()
+    stream_dict_list = map(_get_stream_dict, stream_list)
+    return sorted(stream_dict_list, key=lambda d: d['LastPictDate'])[::-1]
 
 
 def get_single_stream(name):

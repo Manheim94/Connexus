@@ -51,6 +51,16 @@ class ViewAllStreamsServiceHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(return_info))
 
 
+class ViewAllStreamsServiceHandlerAndroid(webapp2.RequestHandler):
+    def get(self):
+        all_stream_list = ops.get_all_stream_Android()
+        return_info = {
+            'all_stream_list': all_stream_list
+        }
+        self.response.content_type = 'text/html'
+        self.response.write(json.dumps(return_info))
+
+
 class ViewSingleStreamServiceHandler(webapp2.RequestHandler):
     def get(self):
         stream_id = self.request.get('stream_id')
@@ -222,6 +232,7 @@ class GPSServiceHandler(webapp2.RequestHandler):
 service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
+    ('/service-viewallstreams-android', ViewAllStreamsServiceHandlerAndroid),
     ('/service-viewsinglestream', ViewSingleStreamServiceHandler),
     ('/service-uploadimage', UploadImageServiceHandler),
     ('/service-create', ServiceHandlerTwo.CreateStreamServiceHandler),
