@@ -300,14 +300,15 @@ def get_geoview_stream(name):
     return img_info
 
 def get_gps_list():
-    img_list = Stream.query().fetch()
+    img_list = Image.query().fetch()
     img_info = []
     for img in img_list:
-        single_img_dict = {}
-        single_img_dict['img_url'] = img.url
-        single_img_dict['img_lat'] = img.gps_lat
-        single_img_dict['img_lon'] = img.gps_lon
-        # single_img_dict['img_stream'] = img.key.parent('Stream').get().name
-        img_info.append(single_img_dict)
+        if img.key.parent().get():
+            single_img_dict = {}
+            single_img_dict['img_url'] = img.url
+            single_img_dict['img_lat'] = img.gps_lat
+            single_img_dict['img_lon'] = img.gps_lon
+            single_img_dict['img_stream'] = img.key.parent().get().name
+            img_info.append(single_img_dict)
         # single_img_dict['img_stream'] = img.Key.parent(Stream)
     return img_info
