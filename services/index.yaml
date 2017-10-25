@@ -3,3 +3,8 @@ indexes:
   ancestor: yes
   properties:
   - name: upload_date
+
+- kind: Stream
+  ancestor: yes
+  properties:
+  - name: name

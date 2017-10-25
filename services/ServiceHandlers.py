@@ -212,6 +212,13 @@ class ChromeServiceHandler(webapp2.RequestHandler):
         ops.create_image(img_comment, img_name, unicorn_url, stream_id, lon, lat)
 
 
+class GPSServiceHandler(webapp2.RequestHandler):
+    def get(self):
+        return_info = ops.get_gps_list()
+        self.response.content_type = 'text/html'
+        self.response.write(json.dumps(return_info))
+
+
 service = webapp2.WSGIApplication([
     ('/service-manage', ManageServiceHandler),
     ('/service-viewallstreams', ViewAllStreamsServiceHandler),
@@ -229,5 +236,6 @@ service = webapp2.WSGIApplication([
     ('/service-secretupload', SecreteUploadImageServiceHandler),
     ('/service-geoview', GeoViewServiceHandler),
     ('/service-searchSuggestions', ServiceHandlerTwo.GetSearchSuggestionService),
-    ('/service-chrome', ChromeServiceHandler)
+    ('/service-chrome', ChromeServiceHandler),
+    ('/service-getgps', GPSServiceHandler)
 ], debug=True)
