@@ -101,11 +101,15 @@ class SecreteUploadImageServiceHandler(webapp2.RequestHandler):
         #self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
 
 
+# for android
 class UploadImageServiceHandler(webapp2.RequestHandler):
     def post(self):
         unicorn = self.request.get('img')
         img_name = self.request.get('img_name')
         stream_id = self.request.get('stream_id')
+        stream_tags = self.request.get('tags')
+
+        tag_list = re.findall(r'#\w+', stream_tags)
 
         lon = float(self.request.get('lon'))
         lat = float(self.request.get('lat'))
@@ -134,6 +138,7 @@ class UploadImageServiceHandler(webapp2.RequestHandler):
                       + str(stream_id) + "/" + str(img_name) + "." + str(img_real_type).lower()
         # back to ndb server
         ops.create_image(img_comment, img_name, unicorn_url, stream_id, lon, lat)
+        ops.update_stream_tag(stream_id, tag_list)
 
         # redirect the user to the view single page
         self.redirect(str("https://pigeonhole-apt.appspot.com/view_single?stream_id=" + str(stream_id)))
@@ -224,7 +229,9 @@ class ChromeServiceHandler(webapp2.RequestHandler):
 
 class GPSServiceHandler(webapp2.RequestHandler):
     def get(self):
-        return_info = ops.get_gps_list()
+        return_info = {
+            "gps_list": ops.get_gps_list()
+        }
         self.response.content_type = 'text/html'
         self.response.write(json.dumps(return_info))
 

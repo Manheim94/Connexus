@@ -306,6 +306,7 @@ def get_geoview_stream(name):
         img_info.append(single_img_dict)
     return img_info
 
+
 def get_gps_list():
     img_list = Image.query().fetch()
     img_info = []
@@ -319,3 +320,22 @@ def get_gps_list():
             img_info.append(single_img_dict)
         # single_img_dict['img_stream'] = img.Key.parent(Stream)
     return img_info
+
+
+def update_stream_tag(stream_name, new_tag_list):
+    stream_list = Stream.query(Stream.name == stream_name).fetch()
+    if stream_list:
+        stream = stream_list[0]
+        formal_tag_list = stream.tags
+        if not formal_tag_list:
+            formal_tag_list = []
+        formal_tag_list.extend(new_tag_list)
+
+        # filter set
+        final_tag_set = set()
+        for tag in formal_tag_list:
+            final_tag_set.add(tag)
+        # convert set to list
+        stream.tags = list(final_tag_set)
+        stream.put()
+    return
