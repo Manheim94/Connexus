@@ -73,7 +73,7 @@ class ViewSingleStreamServiceHandler(webapp2.RequestHandler):
         # get the owner of the stream from the stream owner dict
         owner = ops.get_stream_owner(stream_id)["Id"]  # It's a dict, need to get the Id
         # check if the user is the owner of the stream
-        is_owned = (owner == user_id)
+        is_owned = (owner.lower() == user_id.lower())
 
         # get if the user subscribe this stream
         is_subed = ops.is_subscribed(stream_id, user_id)
