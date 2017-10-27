@@ -255,5 +255,6 @@ service = webapp2.WSGIApplication([
     ('/service-geoview', GeoViewServiceHandler),
     ('/service-searchSuggestions', ServiceHandlerTwo.GetSearchSuggestionService),
     ('/service-chrome', ChromeServiceHandler),
-    ('/service-getgps', GPSServiceHandler)
+    ('/service-getgps', GPSServiceHandler),
+    ('/service-2search', ServiceHandlerTwo.SecondSearchServiceHandler)
 ], debug=True)

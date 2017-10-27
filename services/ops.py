@@ -192,6 +192,20 @@ def get_search_stream(stream_name_list):
                            "CoverPage": stream.cover_url})
     return result
 
+def get_search_stream_two(stream_name_list):
+    result = []
+    count = 0
+    for i, name in enumerate(stream_name_list):
+        if count >= 10000:
+            break
+        stream_list = Stream.query(Stream.name == name).fetch()
+        if stream_list:
+            count += 1
+            stream = stream_list[0]
+            result.append({"Name": stream.name,
+                           "CoverPage": stream.cover_url})
+    return result
+
 
 def get_stream_owner(stream_name):
     stream_list = Stream.query(Stream.name == stream_name).fetch()

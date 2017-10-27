@@ -107,6 +107,31 @@ class SearchServiceHandler(webapp2.RequestHandler):
         }
         self.response.write(json.dumps(return_info))
 
+class SecondSearchServiceHandler(webapp2.RequestHandler):
+    def get(self):
+
+        searchContent = self.request.get('searchContent')
+        query = searchContent
+        try:
+            index = search.Index(name='newSearchTwo')
+            search_results = index.search(query)  # result list
+            #returned_count = len(search_results.results)
+            number_found = search_results.number_found
+
+            streamList = []
+            for doc in search_results:
+                streamList.append( doc.fields[0].value )
+
+        except search.Error:
+            logging.exception('An error occurred on search.')
+
+        streamInfo = ops.get_search_stream_two(streamList)
+        return_info = {
+            'num' : number_found,
+            'streams': streamInfo
+        }
+        self.response.write(json.dumps(return_info))
+
 
 class TrendingServiceHandler(webapp2.RequestHandler):
     def get(self):
