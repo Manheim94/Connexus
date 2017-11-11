@@ -1,4 +1,4 @@
-# Connexus - Team: Pigeon
-UT-APT mini-project
+# Connexus
+This is a web project about stream sharing website for APT Course
 
-## Demo
+URL: http://pigeonhole-apt.appspot.com/
